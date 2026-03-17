@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Furniture Advisors — Janelle Glanville</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+–cream: #F7F3EE;
+–warm-white: #FDFAF7;
+–charcoal: #1C1C1A;
+–deep: #0F0F0D;
+–gold: #B8975A;
+–gold-light: #D4B483;
+–warm-gray: #8A8479;
+–mid-gray: #C5BFB6;
+–sage: #7A8C76;
+–blush: #D4B8A8;
+–font-display: ‘Cormorant Garamond’, Georgia, serif;
+–font-body: ‘Montserrat’, sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+background: var(–warm-white);
+color: var(–charcoal);
+font-family: var(–font-body);
+font-weight: 300;
+overflow-x: hidden;
+cursor: none;
+}
+
+/* Custom cursor */
+.cursor {
+position: fixed;
+width: 8px; height: 8px;
+background: var(–gold);
+border-radius: 50%;
+pointer-events: none;
+z-index: 9999;
+transition: transform 0.15s ease;
+transform: translate(-50%, -50%);
+}
+.cursor-ring {
+position: fixed;
+width: 36px; height: 36px;
+border: 1px solid var(–gold);
+border-radius: 50%;
+pointer-events: none;
+z-index: 9998;
+transition: transform 0.35s ease, width 0.3s ease, height 0.3s ease, opacity 0.3s ease;
+transform: translate(-50%, -50%);
+opacity: 0.6;
+}
+body:hover .cursor { opacity: 1; }
+
+/* NAV */
+nav {
+position: fixed;
+top: 0; left: 0; right: 0;
+z-index: 100;
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 28px 60px;
+mix-blend-mode: normal;
+transition: background 0.4s ease, padding 0.4s ease;
+}
+nav.scrolled {
+background: rgba(247, 243, 238, 0.95);
+backdrop-filter: blur(12px);
+padding: 18px 60px;
+border-bottom: 1px solid rgba(184, 151, 90, 0.2);
+}
+.nav-logo {
+font-family: var(–font-display);
+font-size: 22px;
+font-weight: 400;
+letter-spacing: 0.08em;
+color: var(–charcoal);
+text-decoration: none;
+}
+.nav-logo span { color: var(–gold); }
+.nav-links {
+display: flex;
+gap: 48px;
+list-style: none;
+}
+.nav-links a {
+font-size: 10px;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+color: var(–warm-gray);
+text-decoration: none;
+transition: color 0.3s ease;
+}
+.nav-links a:hover { color: var(–gold); }
+.nav-cta {
+font-size: 10px;
+letter-spacing: 0.18em;
+text-transform: uppercase;
+color: var(–charcoal);
+text-decoration: none;
+border-bottom: 1px solid var(–gold);
+padding-bottom: 2px;
+transition: color 0.3s ease, border-color 0.3s ease;
+}
+.nav-cta:hover { color: var(–gold); }
+
+/* HERO */
+.hero {
+min-height: 100vh;
+display: grid;
+grid-template-columns: 1fr 1fr;
+position: relative;
+overflow: hidden;
+}
+
+.hero-left {
+display: flex;
+flex-direction: column;
+justify-content: center;
+padding: 140px 60px 80px 60px;
+position: relative;
+z-index: 2;
+}
+
+.hero-eyebrow {
+font-size: 9px;
+letter-spacing: 0.3em;
+text-transform: uppercase;
+color: var(–gold);
+margin-bottom: 32px;
+opacity: 0;
+animation: fadeUp 1s ease 0.3s forwards;
+display: flex;
+align-items: center;
+gap: 16px;
+}
+.hero-eyebrow::before {
+content: ‘’;
+display: block;
+width: 40px;
+height: 1px;
+background: var(–gold);
+}
+
+.hero-title {
+font-family: var(–font-display);
+font-size: clamp(52px, 5.5vw, 82px);
+font-weight: 300;
+line-height: 1.08;
+color: var(–charcoal);
+margin-bottom: 36px;
+opacity: 0;
+animation: fadeUp 1s ease 0.5s forwards;
+}
+.hero-title em {
+font-style: italic;
+color: var(–gold);
+}
+
+.hero-sub {
+font-size: 12px;
+letter-spacing: 0.08em;
+line-height: 2;
+color: var(–warm-gray);
+max-width: 380px;
+margin-bottom: 56px;
+opacity: 0;
+animation: fadeUp 1s ease 0.7s forwards;
+}
+
+.hero-actions {
+display: flex;
+gap: 32px;
+align-items: center;
+opacity: 0;
+animation: fadeUp 1s ease 0.9s forwards;
+}
+
+.btn-primary {
+display: inline-flex;
+align-items: center;
+gap: 12px;
+background: var(–charcoal);
+color: var(–cream);
+font-family: var(–font-body);
+font-size: 10px;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+padding: 18px 36px;
+text-decoration: none;
+border: 1px solid var(–charcoal);
+transition: background 0.35s ease, color 0.35s ease, border-color 0.35s ease;
+position: relative;
+overflow: hidden;
+}
+.btn-primary::before {
+content: ‘’;
+position: absolute;
+top: 0; left: -100%;
+width: 100%; height: 100%;
+background: var(–gold);
+transition: left 0.35s ease;
+z-index: 0;
+}
+.btn-primary:hover::before { left: 0; }
+.btn-primary:hover { border-color: var(–gold); color: var(–charcoal); }
+.btn-primary span { position: relative; z-index: 1; }
+
+.btn-ghost {
+font-size: 10px;
+letter-spacing: 0.18em;
+text-transform: uppercase;
+color: var(–warm-gray);
+text-decoration: none;
+display: flex;
+align-items: center;
+gap: 10px;
+transition: color 0.3s ease;
+}
+.btn-ghost:hover { color: var(–charcoal); }
+.btn-ghost::after {
+content: ‘→’;
+transition: transform 0.3s ease;
+}
+.btn-ghost:hover::after { transform: translateX(4px); }
+
+.hero-right {
+position: relative;
+overflow: hidden;
+}
+.hero-image-wrapper {
+position: absolute;
+inset: 0;
+opacity: 0;
+animation: fadeIn 1.4s ease 0.4s forwards;
+}
+.hero-image-bg {
+width: 100%;
+height: 100%;
+background: linear-gradient(135deg, #E8DDD3 0%, #D4C4B5 40%, #C5B5A5 100%);
+position: relative;
+overflow: hidden;
+}
+/* Decorative room illustration */
+.hero-image-bg::before {
+content: ‘’;
+position: absolute;
+bottom: 0; left: 0; right: 0;
+height: 40%;
+background: linear-gradient(180deg, transparent, rgba(28,28,26,0.08));
+}
+.room-art {
+position: absolute;
+inset: 0;
+display: flex;
+align-items: flex-end;
+justify-content: center;
+padding: 40px;
+}
+
+/* SVG Room Scene */
+.sofa-scene { width: 100%; max-width: 520px; }
+
+.hero-stat-bar {
+position: absolute;
+bottom: 40px;
+left: -30px;
+background: var(–charcoal);
+color: var(–cream);
+padding: 24px 36px;
+display: flex;
+gap: 40px;
+opacity: 0;
+animation: fadeUp 1s ease 1.2s forwards;
+z-index: 10;
+}
+.stat-item { text-align: center; }
+.stat-number {
+font-family: var(–font-display);
+font-size: 32px;
+font-weight: 300;
+color: var(–gold-light);
+display: block;
+}
+.stat-label {
+font-size: 8px;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+color: var(–mid-gray);
+margin-top: 4px;
+display: block;
+}
+
+/* Scrolling ticker */
+.ticker {
+background: var(–gold);
+padding: 14px 0;
+overflow: hidden;
+position: relative;
+}
+.ticker-track {
+display: flex;
+animation: ticker 25s linear infinite;
+white-space: nowrap;
+}
+.ticker-item {
+font-size: 9px;
+letter-spacing: 0.25em;
+text-transform: uppercase;
+color: var(–charcoal);
+padding: 0 48px;
+flex-shrink: 0;
+}
+.ticker-dot {
+color: rgba(28,28,26,0.4);
+margin-right: 48px;
+}
+
+/* PROCESS SECTION */
+.section-process {
+padding: 140px 60px;
+background: var(–warm-white);
+}
+.section-header {
+display: flex;
+justify-content: space-between;
+align-items: flex-end;
+margin-bottom: 100px;
+}
+.section-eyebrow {
+font-size: 9px;
+letter-spacing: 0.3em;
+text-transform: uppercase;
+color: var(–gold);
+margin-bottom: 20px;
+display: flex;
+align-items: center;
+gap: 14px;
+}
+.section-eyebrow::before {
+content: ‘’;
+display: block;
+width: 30px;
+height: 1px;
+background: var(–gold);
+}
+.section-title {
+font-family: var(–font-display);
+font-size: clamp(38px, 4vw, 58px);
+font-weight: 300;
+line-height: 1.12;
+max-width: 500px;
+}
+.section-title em { font-style: italic; color: var(–gold); }
+.section-desc {
+font-size: 11px;
+letter-spacing: 0.06em;
+line-height: 2;
+color: var(–warm-gray);
+max-width: 300px;
+text-align: right;
+}
+
+.process-grid {
+display: grid;
+grid-template-columns: repeat(5, 1fr);
+gap: 0;
+border-top: 1px solid var(–mid-gray);
+}
+.process-step {
+padding: 48px 32px;
+border-right: 1px solid var(–mid-gray);
+position: relative;
+transition: background 0.4s ease;
+}
+.process-step:last-child { border-right: none; }
+.process-step:hover { background: var(–cream); }
+.process-number {
+font-family: var(–font-display);
+font-size: 64px;
+font-weight: 300;
+color: var(–mid-gray);
+line-height: 1;
+margin-bottom: 24px;
+transition: color 0.4s ease;
+}
+.process-step:hover .process-number { color: var(–gold); }
+.process-name {
+font-size: 10px;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+color: var(–charcoal);
+margin-bottom: 16px;
+font-weight: 500;
+}
+.process-detail {
+font-size: 11px;
+line-height: 1.8;
+color: var(–warm-gray);
+letter-spacing: 0.03em;
+}
+.process-icon {
+position: absolute;
+top: 48px; right: 32px;
+font-size: 20px;
+opacity: 0.4;
+}
+
+/* QUIZ SECTION */
+.section-quiz {
+background: var(–charcoal);
+padding: 140px 60px;
+position: relative;
+overflow: hidden;
+}
+.section-quiz::before {
+content: ‘YOUR SPACE’;
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+font-family: var(–font-display);
+font-size: 280px;
+font-weight: 300;
+color: rgba(255,255,255,0.02);
+white-space: nowrap;
+pointer-events: none;
+letter-spacing: 0.1em;
+}
+.quiz-inner {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 100px;
+align-items: center;
+position: relative;
+z-index: 2;
+}
+.quiz-left .section-eyebrow { color: var(–gold-light); }
+.quiz-left .section-eyebrow::before { background: var(–gold-light); }
+.quiz-title {
+font-family: var(–font-display);
+font-size: clamp(42px, 4.5vw, 66px);
+font-weight: 300;
+line-height: 1.1;
+color: var(–cream);
+margin-bottom: 32px;
+}
+.quiz-title em { font-style: italic; color: var(–gold-light); }
+.quiz-desc {
+font-size: 11px;
+letter-spacing: 0.06em;
+line-height: 2.2;
+color: var(–mid-gray);
+margin-bottom: 56px;
+max-width: 400px;
+}
+
+.quiz-features {
+display: flex;
+flex-direction: column;
+gap: 24px;
+margin-bottom: 56px;
+}
+.quiz-feature {
+display: flex;
+align-items: center;
+gap: 20px;
+}
+.feature-line {
+width: 32px;
+height: 1px;
+background: var(–gold);
+flex-shrink: 0;
+}
+.feature-text {
+font-size: 11px;
+letter-spacing: 0.1em;
+color: var(–mid-gray);
+text-transform: uppercase;
+}
+
+.btn-quiz {
+display: inline-flex;
+align-items: center;
+gap: 16px;
+background: var(–gold);
+color: var(–charcoal);
+font-family: var(–font-body);
+font-size: 10px;
+letter-spacing: 0.22em;
+text-transform: uppercase;
+font-weight: 500;
+padding: 20px 44px;
+text-decoration: none;
+border: 1px solid var(–gold);
+transition: background 0.35s ease, color 0.35s ease;
+position: relative;
+overflow: hidden;
+}
+.btn-quiz:hover { background: transparent; color: var(–gold); }
+
+/* Quiz form card */
+.quiz-card {
+background: var(–warm-white);
+padding: 56px 48px;
+position: relative;
+}
+.quiz-card::before {
+content: ‘’;
+position: absolute;
+top: -1px; left: 40px; right: 40px;
+height: 3px;
+background: linear-gradient(90deg, var(–gold), var(–gold-light), var(–gold));
+}
+.quiz-card-title {
+font-family: var(–font-display);
+font-size: 28px;
+font-weight: 400;
+color: var(–charcoal);
+margin-bottom: 8px;
+}
+.quiz-card-sub {
+font-size: 10px;
+letter-spacing: 0.1em;
+color: var(–warm-gray);
+text-transform: uppercase;
+margin-bottom: 40px;
+}
+.form-row {
+margin-bottom: 24px;
+}
+.form-label {
+display: block;
+font-size: 9px;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+color: var(–warm-gray);
+margin-bottom: 10px;
+}
+.form-input {
+width: 100%;
+padding: 14px 0;
+background: transparent;
+border: none;
+border-bottom: 1px solid var(–mid-gray);
+font-family: var(–font-body);
+font-size: 13px;
+color: var(–charcoal);
+outline: none;
+transition: border-color 0.3s ease;
+letter-spacing: 0.04em;
+}
+.form-input:focus { border-color: var(–gold); }
+.form-select {
+width: 100%;
+padding: 14px 0;
+background: transparent;
+border: none;
+border-bottom: 1px solid var(–mid-gray);
+font-family: var(–font-body);
+font-size: 13px;
+color: var(–charcoal);
+outline: none;
+cursor: pointer;
+appearance: none;
+letter-spacing: 0.04em;
+}
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.form-submit {
+width: 100%;
+margin-top: 36px;
+padding: 18px;
+background: var(–charcoal);
+color: var(–cream);
+font-family: var(–font-body);
+font-size: 10px;
+letter-spacing: 0.22em;
+text-transform: uppercase;
+border: 1px solid var(–charcoal);
+cursor: pointer;
+transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+.form-submit:hover { background: var(–gold); border-color: var(–gold); color: var(–charcoal); }
+.form-note {
+text-align: center;
+font-size: 9px;
+letter-spacing: 0.1em;
+color: var(–mid-gray);
+margin-top: 16px;
+text-transform: uppercase;
+}
+
+/* STYLE PROFILES */
+.section-profiles {
+padding: 140px 60px;
+background: var(–cream);
+}
+.profiles-grid {
+display: grid;
+grid-template-columns: repeat(5, 1fr);
+gap: 2px;
+margin-top: 80px;
+}
+.profile-card {
+position: relative;
+aspect-ratio: 3/4;
+overflow: hidden;
+cursor: pointer;
+}
+.profile-bg {
+width: 100%;
+height: 100%;
+transition: transform 0.6s ease;
+}
+.profile-card:hover .profile-bg { transform: scale(1.06); }
+.profile-bg-1 { background: linear-gradient(160deg, #2C3E35, #1A2820); }
+.profile-bg-2 { background: linear-gradient(160deg, #4A3728, #2C1F15); }
+.profile-bg-3 { background: linear-gradient(160deg, #C5B5A0, #A89580); }
+.profile-bg-4 { background: linear-gradient(160deg, #1C2535, #0F1620); }
+.profile-bg-5 { background: linear-gradient(160deg, #3D3530, #221E1A); }
+.profile-overlay {
+position: absolute;
+inset: 0;
+background: linear-gradient(180deg, transparent 30%, rgba(0,0,0,0.75) 100%);
+display: flex;
+flex-direction: column;
+justify-content: flex-end;
+padding: 32px 24px;
+transition: background 0.4s ease;
+}
+.profile-card:hover .profile-overlay { background: linear-gradient(180deg, transparent 10%, rgba(0,0,0,0.85) 100%); }
+.profile-number {
+font-family: var(–font-display);
+font-size: 48px;
+font-weight: 300;
+color: rgba(255,255,255,0.2);
+line-height: 1;
+margin-bottom: 12px;
+}
+.profile-name {
+font-family: var(–font-display);
+font-size: 20px;
+font-weight: 400;
+color: var(–cream);
+font-style: italic;
+margin-bottom: 8px;
+}
+.profile-tag {
+font-size: 8px;
+letter-spacing: 0.22em;
+text-transform: uppercase;
+color: var(–gold-light);
+}
+.profile-desc {
+font-size: 10px;
+line-height: 1.7;
+color: rgba(255,255,255,0.6);
+margin-top: 12px;
+max-height: 0;
+overflow: hidden;
+transition: max-height 0.4s ease;
+letter-spacing: 0.04em;
+}
+.profile-card:hover .profile-desc { max-height: 80px; }
+
+/* TESTIMONIALS / TRUST */
+.section-trust {
+padding: 120px 60px;
+background: var(–warm-white);
+border-top: 1px solid var(–mid-gray);
+}
+.trust-grid {
+display: grid;
+grid-template-columns: 1fr 2px 1fr 2px 1fr;
+gap: 0;
+margin-top: 80px;
+align-items: start;
+}
+.trust-divider { background: var(–mid-gray); }
+.trust-item { padding: 0 64px; }
+.trust-item:first-child { padding-left: 0; }
+.trust-item:last-child { padding-right: 0; }
+.trust-quote {
+font-family: var(–font-display);
+font-size: 18px;
+font-weight: 300;
+font-style: italic;
+line-height: 1.7;
+color: var(–charcoal);
+margin-bottom: 24px;
+}
+.trust-author {
+font-size: 9px;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+color: var(–gold);
+display: flex;
+align-items: center;
+gap: 12px;
+}
+.trust-author::before {
+content: ‘’;
+display: block;
+width: 24px;
+height: 1px;
+background: var(–gold);
+}
+
+/* CTA SECTION */
+.section-cta {
+background: var(–charcoal);
+padding: 100px 60px;
+text-align: center;
+position: relative;
+overflow: hidden;
+}
+.cta-gold-line {
+width: 1px;
+height: 80px;
+background: linear-gradient(180deg, transparent, var(–gold), transparent);
+margin: 0 auto 48px;
+}
+.cta-eyebrow {
+font-size: 9px;
+letter-spacing: 0.3em;
+text-transform: uppercase;
+color: var(–gold);
+margin-bottom: 28px;
+}
+.cta-title {
+font-family: var(–font-display);
+font-size: clamp(40px, 5vw, 72px);
+font-weight: 300;
+color: var(–cream);
+line-height: 1.1;
+margin-bottom: 24px;
+}
+.cta-title em { font-style: italic; color: var(–gold-light); }
+.cta-sub {
+font-size: 11px;
+letter-spacing: 0.08em;
+line-height: 2;
+color: var(–mid-gray);
+max-width: 480px;
+margin: 0 auto 56px;
+}
+.cta-buttons {
+display: flex;
+gap: 24px;
+justify-content: center;
+align-items: center;
+}
+
+/* FOOTER */
+footer {
+background: var(–deep);
+padding: 60px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+border-top: 1px solid rgba(255,255,255,0.06);
+}
+.footer-logo {
+font-family: var(–font-display);
+font-size: 20px;
+font-weight: 400;
+color: var(–cream);
+letter-spacing: 0.06em;
+}
+.footer-logo span { color: var(–gold); }
+.footer-links {
+display: flex;
+gap: 40px;
+list-style: none;
+}
+.footer-links a {
+font-size: 9px;
+letter-spacing: 0.18em;
+text-transform: uppercase;
+color: var(–warm-gray);
+text-decoration: none;
+transition: color 0.3s ease;
+}
+.footer-links a:hover { color: var(–gold); }
+.footer-copy {
+font-size: 9px;
+letter-spacing: 0.1em;
+color: rgba(255,255,255,0.2);
+}
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+from { opacity: 0; transform: translateY(28px); }
+to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+from { opacity: 0; }
+to { opacity: 1; }
+}
+@keyframes ticker {
+from { transform: translateX(0); }
+to { transform: translateX(-50%); }
+}
+
+.reveal {
+opacity: 0;
+transform: translateY(32px);
+transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.reveal.visible {
+opacity: 1;
+transform: translateY(0);
+}
+
+/* Decorative elements */
+.gold-accent {
+width: 60px;
+height: 1px;
+background: var(–gold);
+margin: 32px 0;
+}
+
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+
+<nav id="nav">
+  <a href="#" class="nav-logo">Furniture<span>Advisors</span></a>
+  <ul class="nav-links">
+    <li><a href="#process">Process</a></li>
+    <li><a href="#profiles">Style Profiles</a></li>
+    <li><a href="#quiz">Design Quiz</a></li>
+  </ul>
+  <a href="#quiz" class="nav-cta">Book Your Consultation</a>
+</nav>
+
+<!-- HERO -->
+
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Union & Essex County, New Jersey</div>
+    <h1 class="hero-title">
+      Your space,<br>
+      <em>perfectly</em><br>
+      designed.
+    </h1>
+    <p class="hero-sub">
+      A personalized furniture advisory experience built around your life, your space, and your vision — before you ever step into the showroom.
+    </p>
+    <div class="hero-actions">
+      <a href="#quiz" class="btn-primary"><span>Take the Style Quiz</span></a>
+      <a href="#process" class="btn-ghost">How it works</a>
+    </div>
+
+```
+<div class="hero-stat-bar">
+  <div class="stat-item">
+    <span class="stat-number">5+</span>
+    <span class="stat-label">Style Profiles</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-number">2min</span>
+    <span class="stat-label">To Complete</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-number">VIP</span>
+    <span class="stat-label">Appointments</span>
+  </div>
+</div>
+```
+
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-image-wrapper">
+      <div class="hero-image-bg">
+        <div class="room-art">
+          <!-- Elegant room SVG illustration -->
+          <svg class="sofa-scene" viewBox="0 0 520 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Floor -->
+            <rect x="0" y="290" width="520" height="70" fill="rgba(139,119,101,0.3)"/>
+            <!-- Rug -->
+            <ellipse cx="260" cy="305" rx="180" ry="22" fill="rgba(184,151,90,0.25)" stroke="rgba(184,151,90,0.4)" stroke-width="1"/>
+            <ellipse cx="260" cy="305" rx="160" ry="18" fill="none" stroke="rgba(184,151,90,0.3)" stroke-width="0.5"/>
+            <!-- Wall -->
+            <rect x="0" y="0" width="520" height="295" fill="rgba(197,181,165,0.2)"/>
+            <!-- Baseboard -->
+            <rect x="0" y="285" width="520" height="5" fill="rgba(255,255,255,0.3)"/>
+            <!-- Window -->
+            <rect x="340" y="40" width="140" height="200" rx="2" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+            <line x1="410" y1="40" x2="410" y2="240" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+            <line x1="340" y1="140" x2="480" y2="140" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+            <!-- Curtain left -->
+            <path d="M330 30 C340 80 335 150 340 240" stroke="rgba(139,119,101,0.6)" stroke-width="14" stroke-linecap="round" fill="none"/>
+            <!-- Curtain right -->
+            <path d="M490 30 C480 80 485 150 480 240" stroke="rgba(139,119,101,0.6)" stroke-width="14" stroke-linecap="round" fill="none"/>
+            <!-- Curtain rod -->
+            <line x1="310" y1="30" x2="510" y2="30" stroke="rgba(184,151,90,0.8)" stroke-width="3"/>
+            <circle cx="310" cy="30" r="5" fill="rgba(184,151,90,0.9)"/>
+            <circle cx="510" cy="30" r="5" fill="rgba(184,151,90,0.9)"/>
+
+```
+        <!-- Art on wall -->
+        <rect x="60" y="50" width="110" height="85" rx="1" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+        <rect x="68" y="58" width="94" height="69" fill="rgba(122,140,118,0.3)"/>
+        <path d="M68 100 L110 75 L162 95" stroke="rgba(184,151,90,0.5)" stroke-width="1" fill="none"/>
+
+        <!-- Floor lamp -->
+        <line x1="295" y1="290" x2="295" y2="120" stroke="rgba(184,151,90,0.7)" stroke-width="2"/>
+        <ellipse cx="295" cy="290" rx="12" ry="4" fill="rgba(184,151,90,0.4)"/>
+        <!-- Lamp shade -->
+        <path d="M268 120 L323 120 L315 160 L276 160 Z" fill="rgba(247,243,238,0.6)" stroke="rgba(184,151,90,0.4)" stroke-width="1"/>
+        <!-- Lamp glow -->
+        <ellipse cx="295" cy="155" rx="50" ry="30" fill="rgba(212,180,131,0.08)"/>
+
+        <!-- SOFA - main sectional -->
+        <!-- Sofa base -->
+        <rect x="50" y="235" width="220" height="55" rx="4" fill="rgba(80,65,55,0.85)"/>
+        <!-- Sofa back -->
+        <rect x="50" y="200" width="220" height="42" rx="4" fill="rgba(90,73,62,0.9)"/>
+        <!-- Sofa seat cushions -->
+        <rect x="57" y="238" width="65" height="48" rx="3" fill="rgba(105,86,72,0.8)"/>
+        <rect x="128" y="238" width="65" height="48" rx="3" fill="rgba(100,82,69,0.8)"/>
+        <rect x="199" y="238" width="65" height="48" rx="3" fill="rgba(108,89,74,0.8)"/>
+        <!-- Sofa arm left -->
+        <rect x="38" y="200" width="18" height="90" rx="4" fill="rgba(75,60,50,0.9)"/>
+        <!-- Sofa arm right -->
+        <rect x="264" y="200" width="18" height="90" rx="4" fill="rgba(75,60,50,0.9)"/>
+        <!-- Sofa back cushions -->
+        <rect x="57" y="204" width="65" height="34" rx="3" fill="rgba(100,82,68,0.8)"/>
+        <rect x="128" y="204" width="65" height="34" rx="3" fill="rgba(95,78,65,0.8)"/>
+        <rect x="199" y="204" width="65" height="34" rx="3" fill="rgba(102,84,70,0.8)"/>
+        <!-- Sofa legs -->
+        <rect x="58" y="285" width="8" height="10" rx="1" fill="rgba(60,48,38,0.8)"/>
+        <rect x="115" y="285" width="8" height="10" rx="1" fill="rgba(60,48,38,0.8)"/>
+        <rect x="175" y="285" width="8" height="10" rx="1" fill="rgba(60,48,38,0.8)"/>
+        <rect x="250" y="285" width="8" height="10" rx="1" fill="rgba(60,48,38,0.8)"/>
+        <!-- Throw pillow 1 -->
+        <rect x="64" y="212" width="38" height="38" rx="3" fill="rgba(184,151,90,0.7)" transform="rotate(-5 64 212)"/>
+        <!-- Throw pillow 2 -->
+        <rect x="215" y="215" width="34" height="34" rx="3" fill="rgba(197,181,165,0.8)" transform="rotate(4 215 215)"/>
+
+        <!-- Coffee table -->
+        <rect x="75" y="272" width="155" height="22" rx="2" fill="rgba(139,119,101,0.6)" stroke="rgba(184,151,90,0.3)" stroke-width="0.5"/>
+        <!-- Table top surface highlight -->
+        <rect x="77" y="273" width="151" height="4" rx="1" fill="rgba(255,255,255,0.1)"/>
+        <!-- Table decor - small vase -->
+        <rect x="138" y="258" width="6" height="14" rx="3" fill="rgba(184,151,90,0.8)"/>
+        <ellipse cx="141" cy="257" rx="5" ry="3" fill="rgba(184,151,90,0.7)"/>
+        <!-- Table decor - books -->
+        <rect x="155" y="264" width="18" height="8" rx="1" fill="rgba(122,140,118,0.7)"/>
+        <rect x="157" y="263" width="14" height="8" rx="1" fill="rgba(90,120,100,0.6)"/>
+
+        <!-- Accent chair -->
+        <rect x="310" y="240" width="75" height="50" rx="4" fill="rgba(45,35,28,0.85)"/>
+        <rect x="310" y="215" width="75" height="30" rx="4" fill="rgba(55,43,35,0.9)"/>
+        <rect x="298" y="215" width="14" height="75" rx="4" fill="rgba(40,30,24,0.9)"/>
+        <!-- Chair cushion -->
+        <rect x="316" y="243" width="63" height="43" rx="3" fill="rgba(65,50,40,0.8)"/>
+        <!-- Chair pillow -->
+        <rect x="316" y="218" width="63" height="24" rx="3" fill="rgba(60,47,37,0.8)"/>
+        <!-- Accent chair gold detail -->
+        <rect x="375" y="215" width="14" height="75" rx="4" fill="rgba(40,30,24,0.9)"/>
+
+        <!-- Side table -->
+        <rect x="298" y="268" width="14" height="22" rx="1" fill="rgba(184,151,90,0.5)"/>
+        <ellipse cx="305" cy="268" rx="18" ry="4" fill="rgba(184,151,90,0.5)" stroke="rgba(184,151,90,0.4)" stroke-width="0.5"/>
+
+        <!-- Subtle shadow under furniture -->
+        <ellipse cx="160" cy="295" rx="140" ry="6" fill="rgba(28,28,26,0.12)"/>
+        <ellipse cx="348" cy="295" rx="55" ry="5" fill="rgba(28,28,26,0.1)"/>
+
+        <!-- Gold line detail at bottom -->
+        <line x1="80" y1="355" x2="440" y2="355" stroke="rgba(184,151,90,0.3)" stroke-width="0.5"/>
+      </svg>
+    </div>
+  </div>
+</div>
+```
+
+  </div>
+</section>
+
+<!-- TICKER -->
+
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="ticker-item">Design Consultation <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Room Planning <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Style Discovery <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">VIP Appointments <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Fabric Selection <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Protection Planning <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Financing Guidance <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Union County <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Essex County <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Design Consultation <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Room Planning <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Style Discovery <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">VIP Appointments <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Fabric Selection <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Protection Planning <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Financing Guidance <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Union County <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Essex County <span class="ticker-dot">✦</span></span>
+  </div>
+</div>
+
+<!-- PROCESS -->
+
+<section class="section-process" id="process">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-eyebrow">The Experience</div>
+      <h2 class="section-title">From vision to <em>reality</em> — in five steps.</h2>
+    </div>
+    <p class="section-desc">Every appointment is prepared. Every recommendation is personal. Every detail is considered before you arrive.</p>
+  </div>
+
+  <div class="process-grid reveal">
+    <div class="process-step">
+      <div class="process-icon">◎</div>
+      <div class="process-number">01</div>
+      <div class="process-name">Discovery</div>
+      <p class="process-detail">Share your room dimensions, lifestyle, and style direction through our guided intake experience.</p>
+    </div>
+    <div class="process-step">
+      <div class="process-icon">◈</div>
+      <div class="process-number">02</div>
+      <div class="process-name">Curation</div>
+      <p class="process-detail">Receive a personalized style profile with furniture selections curated specifically for your space.</p>
+    </div>
+    <div class="process-step">
+      <div class="process-icon">◇</div>
+      <div class="process-number">03</div>
+      <div class="process-name">Appointment</div>
+      <p class="process-detail">Book your VIP consultation. Your advisor arrives prepared with solutions, not suggestions.</p>
+    </div>
+    <div class="process-step">
+      <div class="process-icon">◉</div>
+      <div class="process-number">04</div>
+      <div class="process-name">Design</div>
+      <p class="process-detail">Walk through a fully visualized room concept with fabric, finish, and accessory recommendations.</p>
+    </div>
+    <div class="process-step">
+      <div class="process-icon">◐</div>
+      <div class="process-number">05</div>
+      <div class="process-name">Delivery</div>
+      <p class="process-detail">Follow-up care and styling guidance after delivery to ensure your space is exactly right.</p>
+    </div>
+  </div>
+</section>
+
+<!-- STYLE PROFILES -->
+
+<section class="section-profiles" id="profiles">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-eyebrow">Style Profiles</div>
+      <h2 class="section-title">Find your <em>signature</em> aesthetic.</h2>
+    </div>
+    <p class="section-desc">Five distinct design personalities. Each one curated with specific fabric, finish, and layout recommendations.</p>
+  </div>
+
+  <div class="profiles-grid reveal">
+    <div class="profile-card">
+      <div class="profile-bg profile-bg-1"></div>
+      <div class="profile-overlay">
+        <div class="profile-number">01</div>
+        <div class="profile-name">Modern Luxe Visionary</div>
+        <div class="profile-tag">Clean Lines · Elevated Finishes</div>
+        <div class="profile-desc">Sculptural forms, performance fabrics, and a neutral palette with bold accent moments.</div>
+      </div>
+    </div>
+    <div class="profile-card">
+      <div class="profile-bg profile-bg-2"></div>
+      <div class="profile-overlay">
+        <div class="profile-number">02</div>
+        <div class="profile-name">Warm Traditionalist</div>
+        <div class="profile-tag">Rich Textures · Timeless Comfort</div>
+        <div class="profile-desc">Deep wood tones, layered textiles, and furnishings that feel collected over time.</div>
+      </div>
+    </div>
+    <div class="profile-card">
+      <div class="profile-bg profile-bg-3"></div>
+      <div class="profile-overlay">
+        <div class="profile-number">03</div>
+        <div class="profile-name">Coastal Serene</div>
+        <div class="profile-tag">Light · Airy · Natural</div>
+        <div class="profile-desc">Bleached wood, linen textures, and a palette borrowed from sand, sea, and sky.</div>
+      </div>
+    </div>
+    <div class="profile-card">
+      <div class="profile-bg profile-bg-4"></div>
+      <div class="profile-overlay">
+        <div class="profile-number">04</div>
+        <div class="profile-name">Urban Glam</div>
+        <div class="profile-tag">Drama · Contrast · Statement</div>
+        <div class="profile-desc">Velvet upholstery, brass accents, and spaces that make an unmistakable impression.</div>
+      </div>
+    </div>
+    <div class="profile-card">
+      <div class="profile-bg profile-bg-5"></div>
+      <div class="profile-overlay">
+        <div class="profile-number">05</div>
+        <div class="profile-name">Rustic Refined</div>
+        <div class="profile-tag">Organic · Grounded · Artisanal</div>
+        <div class="profile-desc">Natural materials, handcrafted details, and warmth that turns a house into a home.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ SECTION -->
+
+<section class="section-quiz" id="quiz">
+  <div class="quiz-inner">
+    <div class="quiz-left">
+      <div class="section-eyebrow">Design Intake</div>
+      <h2 class="quiz-title">
+        Tell us about<br>
+        <em>your space.</em>
+      </h2>
+      <p class="quiz-desc">
+        In under four minutes, share the details that matter most — room dimensions, lifestyle, style direction — and receive a curated furniture plan before your VIP consultation.
+      </p>
+      <div class="quiz-features">
+        <div class="quiz-feature">
+          <div class="feature-line"></div>
+          <div class="feature-text">Room dimensions & layout</div>
+        </div>
+        <div class="quiz-feature">
+          <div class="feature-line"></div>
+          <div class="feature-text">Style profile & color direction</div>
+        </div>
+        <div class="quiz-feature">
+          <div class="feature-line"></div>
+          <div class="feature-text">Lifestyle & fabric needs</div>
+        </div>
+        <div class="quiz-feature">
+          <div class="feature-line"></div>
+          <div class="feature-text">Budget & financing options</div>
+        </div>
+        <div class="quiz-feature">
+          <div class="feature-line"></div>
+          <div class="feature-text">VIP appointment booking</div>
+        </div>
+      </div>
+      <a href="#" class="btn-quiz">Start Your Style Quiz →</a>
+    </div>
+
+```
+<div class="quiz-card reveal">
+  <div class="quiz-card-title">Book a Consultation</div>
+  <div class="quiz-card-sub">Reserve your VIP design session</div>
+
+  <div class="form-row">
+    <label class="form-label">Full Name</label>
+    <input type="text" class="form-input" placeholder="Your name">
+  </div>
+  <div class="form-grid">
+    <div class="form-row">
+      <label class="form-label">Email</label>
+      <input type="email" class="form-input" placeholder="your@email.com">
+    </div>
+    <div class="form-row">
+      <label class="form-label">Phone</label>
+      <input type="tel" class="form-input" placeholder="(000) 000-0000">
+    </div>
+  </div>
+  <div class="form-row">
+    <label class="form-label">Room You're Designing</label>
+    <select class="form-select">
+      <option value="">Select a room</option>
+      <option>Living Room</option>
+      <option>Bedroom</option>
+      <option>Dining Room</option>
+      <option>Home Office</option>
+      <option>Multiple Rooms</option>
+    </select>
+  </div>
+  <div class="form-row">
+    <label class="form-label">Investment Range</label>
+    <select class="form-select">
+      <option value="">Select range</option>
+      <option>$1,000 – $2,000</option>
+      <option>$2,000 – $4,000</option>
+      <option>$4,000 – $8,000</option>
+      <option>$8,000+</option>
+    </select>
+  </div>
+  <button class="form-submit">Request My VIP Appointment</button>
+  <p class="form-note">✦ Complimentary · No obligation · Union & Essex County</p>
+</div>
+```
+
+  </div>
+</section>
+
+<!-- TRUST -->
+
+<section class="section-trust">
+  <div class="reveal" style="text-align:center; margin-bottom: 0;">
+    <div class="section-eyebrow" style="justify-content: center;">
+      <span style="display:flex; align-items:center; gap:14px;">
+        <span style="display:block; width:30px; height:1px; background:var(--gold);"></span>
+        Client Experiences
+        <span style="display:block; width:30px; height:1px; background:var(--gold);"></span>
+      </span>
+    </div>
+    <h2 class="section-title" style="text-align:center; margin: 0 auto;">What clients say about the <em>experience.</em></h2>
+  </div>
+  <div class="trust-grid reveal">
+    <div class="trust-item">
+      <p class="trust-quote">"She already knew exactly what would work in our space before we said a word. The most prepared, thoughtful advisor we've ever worked with."</p>
+      <div class="trust-author">The Morales Family, Union County</div>
+    </div>
+    <div class="trust-divider"></div>
+    <div class="trust-item">
+      <p class="trust-quote">"I came in expecting a salesperson. I got a designer. The intake process made the whole experience feel custom and effortless."</p>
+      <div class="trust-author">D. Washington, Essex County</div>
+    </div>
+    <div class="trust-divider"></div>
+    <div class="trust-item">
+      <p class="trust-quote">"Our living room is completely transformed. She matched everything — the fabric, the scale, the accessories. Perfect from the first suggestion."</p>
+      <div class="trust-author">The Chen Family, NJ</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+
+<section class="section-cta">
+  <div class="cta-gold-line"></div>
+  <div class="cta-eyebrow reveal">Ready to design your space?</div>
+  <h2 class="cta-title reveal">Your room is waiting<br>to become <em>remarkable.</em></h2>
+  <p class="cta-sub reveal">Take the 2-minute style quiz. Receive your personalized furniture plan. Book your VIP consultation. Walk in ready to say yes.</p>
+  <div class="cta-buttons reveal">
+    <a href="#quiz" class="btn-primary"><span>Take the Style Quiz</span></a>
+    <a href="#quiz" class="btn-ghost" style="color: var(--mid-gray);">Book directly</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+
+<footer>
+  <div class="footer-logo">Furniture<span>Advisors</span><span style="font-size:12px; color: var(--warm-gray); letter-spacing:0.1em; font-family: var(--font-body); font-weight:300;">.co</span></div>
+  <ul class="footer-links">
+    <li><a href="#">Style Quiz</a></li>
+    <li><a href="#">Book Appointment</a></li>
+    <li><a href="#">Style Profiles</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <div class="footer-copy">© 2026 FurnitureAdvisors.co · Janelle Glanville · NJ</div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const cursorRing = document.getElementById('cursorRing');
+  let mouseX = 0, mouseY = 0;
+  let ringX = 0, ringY = 0;
+
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    cursor.style.left = mouseX + 'px';
+    cursor.style.top = mouseY + 'px';
+  });
+
+  function animateRing() {
+    ringX += (mouseX - ringX) * 0.12;
+    ringY += (mouseY - ringY) * 0.12;
+    cursorRing.style.left = ringX + 'px';
+    cursorRing.style.top = ringY + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  document.querySelectorAll('a, button, .profile-card, .process-step').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.transform = 'translate(-50%, -50%) scale(2.5)';
+      cursorRing.style.width = '60px';
+      cursorRing.style.height = '60px';
+      cursorRing.style.opacity = '0.3';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+      cursorRing.style.width = '36px';
+      cursorRing.style.height = '36px';
+      cursorRing.style.opacity = '0.6';
+    });
+  });
+
+  // Nav scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+
+</body>
+</html>
