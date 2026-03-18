@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-cormorant: 'Cormorant Garamond', Georgia, serif;
+    --font-montserrat: 'Montserrat', system-ui, sans-serif;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #FDFAF7;
+    color: #1C1C1A;
+  }
+}
+
+@layer components {
+  .btn-gold {
+    @apply inline-flex items-center justify-center px-8 py-3 bg-gold text-warm-white text-xs font-semibold tracking-widest uppercase transition-all duration-200 hover:bg-gold-light hover:text-charcoal;
+  }
+
+  .btn-outline-gold {
+    @apply inline-flex items-center justify-center px-8 py-3 border border-gold text-gold text-xs font-semibold tracking-widest uppercase transition-all duration-200 hover:bg-gold hover:text-warm-white;
+  }
+
+  .gold-divider {
+    @apply w-16 h-px bg-gold my-6;
+  }
+
+  .section-label {
+    @apply text-xs tracking-[0.2em] uppercase text-gold font-body font-medium;
+  }
+
+  .display-heading {
+    @apply font-display font-light text-charcoal leading-tight;
+  }
+}
