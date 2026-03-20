@@ -826,8 +826,215 @@ transform: translateY(0);
 .gold-accent {
 width: 60px;
 height: 1px;
-background: var(–gold);
+background: var(--gold);
 margin: 32px 0;
+}
+
+/* ─── HAMBURGER & MOBILE MENU ─── */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 6px 4px;
+  z-index: 300;
+  position: relative;
+}
+.nav-hamburger span {
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: var(--charcoal);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.nav-hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+.mobile-menu {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: var(--cream);
+  z-index: 200;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 36px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.mobile-menu.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.mobile-menu .mobile-link {
+  font-family: var(--font-display);
+  font-size: 38px;
+  font-weight: 300;
+  color: var(--charcoal);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: color 0.3s ease;
+}
+.mobile-menu .mobile-link:hover { color: var(--gold); }
+.mobile-menu .mobile-cta {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--charcoal);
+  border-bottom: 1px solid var(--gold);
+  padding-bottom: 4px;
+  margin-top: 8px;
+}
+
+/* Hide custom cursor on touch-only devices */
+@media (hover: none) and (pointer: coarse) {
+  .cursor, .cursor-ring { display: none !important; }
+  body { cursor: auto; }
+}
+
+/* ─── TABLET (≤1024px) ─── */
+@media (max-width: 1024px) {
+  nav { padding: 24px 40px; }
+  nav.scrolled { padding: 16px 40px; }
+  .nav-links { gap: 32px; }
+
+  .hero-left { padding: 120px 40px 60px; }
+
+  .section-process,
+  .section-profiles,
+  .section-quiz { padding: 100px 40px; }
+  .section-trust { padding: 80px 40px; }
+  .section-cta { padding: 80px 40px; }
+  footer { padding: 48px 40px; }
+
+  .process-grid { grid-template-columns: repeat(3, 1fr); }
+  .process-step:nth-child(3) { border-right: none; }
+  .process-step:nth-child(4),
+  .process-step:nth-child(5) { border-top: 1px solid var(--mid-gray); }
+
+  .profiles-grid { grid-template-columns: repeat(3, 1fr); }
+
+  .quiz-inner { gap: 60px; }
+}
+
+/* ─── MOBILE (≤768px) ─── */
+@media (max-width: 768px) {
+  /* Nav */
+  nav { padding: 18px 20px; }
+  nav.scrolled { padding: 14px 20px; }
+  .nav-links, .nav-cta { display: none; }
+  .nav-hamburger { display: flex; }
+  .mobile-menu { display: flex; }
+
+  /* Hero */
+  .hero {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+  .hero-left { padding: 100px 20px 56px; }
+  .hero-right { display: none; }
+  .hero-stat-bar {
+    position: static;
+    margin-top: 40px;
+    left: 0;
+    gap: 20px;
+    padding: 20px 20px;
+  }
+
+  /* Section headings */
+  .section-header {
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 56px;
+  }
+  .section-desc { text-align: left; max-width: 100%; }
+
+  /* Section padding */
+  .section-process,
+  .section-profiles,
+  .section-quiz { padding: 72px 20px; }
+  .section-trust { padding: 60px 20px; }
+  .section-cta { padding: 64px 20px; }
+
+  /* Process — 2-col grid */
+  .process-grid {
+    grid-template-columns: 1fr 1fr;
+    border-top: 1px solid var(--mid-gray);
+  }
+  .process-step {
+    border-right: none;
+    border-bottom: 1px solid var(--mid-gray);
+    padding: 32px 20px;
+  }
+  .process-step:nth-child(odd) { border-right: 1px solid var(--mid-gray); }
+  .process-step:nth-child(4),
+  .process-step:nth-child(5) { border-top: none; }
+  .process-step:last-child { border-bottom: none; }
+  .process-step:nth-child(4) { border-bottom: none; }
+
+  /* Profiles — 2-col */
+  .profiles-grid {
+    grid-template-columns: 1fr 1fr;
+    margin-top: 48px;
+  }
+
+  /* Quiz — stacked */
+  .quiz-inner {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  .quiz-card { padding: 36px 24px; }
+  .form-grid { grid-template-columns: 1fr; gap: 0; }
+
+  /* Trust — stacked */
+  .trust-grid {
+    grid-template-columns: 1fr;
+    margin-top: 48px;
+  }
+  .trust-divider { display: none; }
+  .trust-item {
+    padding: 32px 0;
+    border-bottom: 1px solid var(--mid-gray);
+  }
+  .trust-item:last-child { border-bottom: none; }
+
+  /* CTA */
+  .cta-buttons {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  /* Footer */
+  footer {
+    flex-direction: column;
+    gap: 28px;
+    text-align: center;
+    padding: 48px 20px;
+  }
+  .footer-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px 32px;
+  }
+}
+
+/* ─── SMALL MOBILE (≤480px) ─── */
+@media (max-width: 480px) {
+  .profiles-grid { grid-template-columns: 1fr; }
+  .process-grid { grid-template-columns: 1fr; }
+  .process-step { border-right: none !important; }
+  .process-step:nth-child(odd) { border-right: none !important; }
+  .hero-stat-bar { gap: 16px; padding: 16px; }
+  .stat-number { font-size: 24px; }
+  .mobile-menu .mobile-link { font-size: 30px; }
 }
 
 </style>
@@ -847,7 +1054,20 @@ margin: 32px 0;
     <li><a href="#quiz">Design Quiz</a></li>
   </ul>
   <a href="#quiz" class="nav-cta">Book Your Consultation</a>
+  <button class="nav-hamburger" id="hamburger" aria-label="Open menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#process" class="mobile-link">Process</a>
+  <a href="#profiles" class="mobile-link">Style Profiles</a>
+  <a href="#quiz" class="mobile-link">Design Quiz</a>
+  <a href="#quiz" class="mobile-link mobile-cta">Book Consultation</a>
+</div>
 
 <!-- HERO -->
 
@@ -867,22 +1087,20 @@ margin: 32px 0;
       <a href="#process" class="btn-ghost">How it works</a>
     </div>
 
-```
-<div class="hero-stat-bar">
-  <div class="stat-item">
-    <span class="stat-number">5+</span>
-    <span class="stat-label">Style Profiles</span>
-  </div>
-  <div class="stat-item">
-    <span class="stat-number">2min</span>
-    <span class="stat-label">To Complete</span>
-  </div>
-  <div class="stat-item">
-    <span class="stat-number">VIP</span>
-    <span class="stat-label">Appointments</span>
-  </div>
-</div>
-```
+    <div class="hero-stat-bar">
+      <div class="stat-item">
+        <span class="stat-number">5+</span>
+        <span class="stat-label">Style Profiles</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">2min</span>
+        <span class="stat-label">To Complete</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">VIP</span>
+        <span class="stat-label">Appointments</span>
+      </div>
+    </div>
 
   </div>
 
@@ -914,8 +1132,7 @@ margin: 32px 0;
             <circle cx="310" cy="30" r="5" fill="rgba(184,151,90,0.9)"/>
             <circle cx="510" cy="30" r="5" fill="rgba(184,151,90,0.9)"/>
 
-```
-        <!-- Art on wall -->
+            <!-- Art on wall -->
         <rect x="60" y="50" width="110" height="85" rx="1" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
         <rect x="68" y="58" width="94" height="69" fill="rgba(122,140,118,0.3)"/>
         <path d="M68 100 L110 75 L162 95" stroke="rgba(184,151,90,0.5)" stroke-width="1" fill="none"/>
@@ -991,7 +1208,6 @@ margin: 32px 0;
     </div>
   </div>
 </div>
-```
 
   </div>
 </section>
@@ -1164,9 +1380,8 @@ margin: 32px 0;
       <a href="#" class="btn-quiz">Start Your Style Quiz →</a>
     </div>
 
-```
-<div class="quiz-card reveal">
-  <div class="quiz-card-title">Book a Consultation</div>
+    <div class="quiz-card reveal">
+      <div class="quiz-card-title">Book a Consultation</div>
   <div class="quiz-card-sub">Reserve your VIP design session</div>
 
   <div class="form-row">
@@ -1205,9 +1420,8 @@ margin: 32px 0;
     </select>
   </div>
   <button class="form-submit">Request My VIP Appointment</button>
-  <p class="form-note">✦ Complimentary · No obligation · Union & Essex County</p>
-</div>
-```
+      <p class="form-note">✦ Complimentary · No obligation · Union & Essex County</p>
+    </div>
 
   </div>
 </section>
@@ -1329,9 +1543,39 @@ margin: 32px 0;
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
       e.preventDefault();
-      const target = document.querySelector(a.getAttribute('href'));
-      if (target) target.scrollIntoView({ behavior: 'smooth' });
+      const id = a.getAttribute('href');
+      if (id === '#') return;
+      const target = document.querySelector(id);
+      if (target) {
+        closeMobileMenu();
+        setTimeout(() => target.scrollIntoView({ behavior: 'smooth' }), 10);
+      }
     });
+  });
+
+  // Mobile hamburger menu
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  function openMobileMenu() {
+    hamburger.classList.add('open');
+    mobileMenu.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMobileMenu() {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  hamburger.addEventListener('click', () => {
+    if (hamburger.classList.contains('open')) closeMobileMenu();
+    else openMobileMenu();
+  });
+
+  // Close menu when a mobile link is clicked
+  mobileMenu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', closeMobileMenu);
   });
 </script>
 
