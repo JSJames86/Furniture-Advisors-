@@ -1060,7 +1060,7 @@ margin: 32px 0;
   pointer-events: auto;
 }
 .quiz-modal {
-  background: var(--charcoal);
+  background: var(--warm-white);
   max-width: 720px;
   width: 100%;
   max-height: 92vh;
@@ -1076,7 +1076,7 @@ margin: 32px 0;
 /* Progress */
 .quiz-progress-bar {
   height: 2px;
-  background: rgba(255,255,255,0.07);
+  background: rgba(28,28,26,0.1);
   overflow: hidden;
 }
 .quiz-progress-fill {
@@ -1088,9 +1088,9 @@ margin: 32px 0;
 .quiz-modal-header {
   position: sticky;
   top: 0;
-  background: var(--charcoal);
+  background: var(--warm-white);
   z-index: 10;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid rgba(28,28,26,0.1);
 }
 .quiz-modal-meta {
   display: flex;
@@ -1115,7 +1115,7 @@ margin: 32px 0;
   line-height: 1;
   font-weight: 300;
 }
-.quiz-close-btn:hover { color: var(--cream); }
+.quiz-close-btn:hover { color: var(--charcoal); }
 
 /* Steps */
 .quiz-step { display: none; }
@@ -1144,11 +1144,11 @@ margin: 32px 0;
   font-family: var(--font-display);
   font-size: clamp(26px, 3.5vw, 42px);
   font-weight: 300;
-  color: var(--cream);
+  color: var(--charcoal);
   line-height: 1.12;
   margin-bottom: 8px;
 }
-.quiz-q-title em { font-style: italic; color: var(--gold-light); }
+.quiz-q-title em { font-style: italic; color: var(--gold); }
 .quiz-q-sub {
   font-size: 11px;
   letter-spacing: 0.05em;
@@ -1168,7 +1168,7 @@ margin: 32px 0;
   display: flex;
   align-items: center;
   gap: 20px;
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(28,28,26,0.12);
   padding: 20px 24px;
   cursor: pointer;
   transition: border-color 0.3s ease, background 0.3s ease;
@@ -1186,7 +1186,7 @@ margin: 32px 0;
   transform-origin: bottom;
 }
 .choice-card:hover { border-color: rgba(184,151,90,0.35); }
-.choice-card.selected { border-color: var(--gold); background: rgba(184,151,90,0.06); }
+.choice-card.selected { border-color: var(--gold); background: rgba(184,151,90,0.08); }
 .choice-card.selected::after { transform: scaleY(1); }
 .choice-swatch {
   width: 28px;
@@ -1199,7 +1199,7 @@ margin: 32px 0;
   font-size: 10px;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: var(--cream);
+  color: var(--charcoal);
   font-weight: 500;
   margin-bottom: 5px;
 }
@@ -1212,7 +1212,7 @@ margin: 32px 0;
 .choice-check {
   width: 20px;
   height: 20px;
-  border: 1px solid rgba(255,255,255,0.2);
+  border: 1px solid rgba(28,28,26,0.2);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -1244,29 +1244,29 @@ margin: 32px 0;
   padding: 14px 0;
   background: transparent;
   border: none;
-  border-bottom: 1px solid rgba(255,255,255,0.14);
+  border-bottom: 1px solid var(--mid-gray);
   font-family: var(--font-body);
   font-size: 14px;
-  color: var(--cream);
+  color: var(--charcoal);
   outline: none;
   transition: border-color 0.3s ease;
   letter-spacing: 0.04em;
 }
 .quiz-form-input:focus,
 .quiz-form-select:focus { border-color: var(--gold); }
-.quiz-form-input::placeholder { color: rgba(255,255,255,0.2); }
+.quiz-form-input::placeholder { color: rgba(28,28,26,0.3); }
 .quiz-form-select { appearance: none; cursor: pointer; }
-.quiz-form-select option { background: #1c1c1a; color: var(--cream); }
+.quiz-form-select option { background: var(--warm-white); color: var(--charcoal); }
 .quiz-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
 .quiz-form-textarea {
   width: 100%;
   padding: 14px 0;
   background: transparent;
   border: none;
-  border-bottom: 1px solid rgba(255,255,255,0.14);
+  border-bottom: 1px solid var(--mid-gray);
   font-family: var(--font-body);
   font-size: 13px;
-  color: var(--cream);
+  color: var(--charcoal);
   outline: none;
   resize: none;
   letter-spacing: 0.04em;
@@ -1274,7 +1274,7 @@ margin: 32px 0;
   transition: border-color 0.3s ease;
 }
 .quiz-form-textarea:focus { border-color: var(--gold); }
-.quiz-form-textarea::placeholder { color: rgba(255,255,255,0.2); }
+.quiz-form-textarea::placeholder { color: rgba(28,28,26,0.3); }
 
 /* Checkbox group */
 .checkbox-group { display: flex; flex-direction: column; gap: 10px; }
@@ -1282,18 +1282,18 @@ margin: 32px 0;
   display: flex;
   align-items: center;
   gap: 16px;
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(28,28,26,0.12);
   padding: 18px 20px;
   cursor: pointer;
   transition: border-color 0.3s ease, background 0.3s ease;
   user-select: none;
 }
 .checkbox-item:hover { border-color: rgba(184,151,90,0.35); }
-.checkbox-item.selected { border-color: var(--gold); background: rgba(184,151,90,0.06); }
+.checkbox-item.selected { border-color: var(--gold); background: rgba(184,151,90,0.08); }
 .checkbox-box {
   width: 18px;
   height: 18px;
-  border: 1px solid rgba(255,255,255,0.22);
+  border: 1px solid rgba(28,28,26,0.25);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1310,7 +1310,7 @@ margin: 32px 0;
 .checkbox-label {
   font-size: 12px;
   letter-spacing: 0.08em;
-  color: var(--cream);
+  color: var(--charcoal);
 }
 .checkbox-sub {
   font-size: 10px;
@@ -1322,18 +1322,18 @@ margin: 32px 0;
 /* Budget cards */
 .budget-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 36px; }
 .budget-card {
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(28,28,26,0.12);
   padding: 24px 20px;
   cursor: pointer;
   transition: border-color 0.3s ease, background 0.3s ease;
   text-align: center;
 }
 .budget-card:hover { border-color: rgba(184,151,90,0.35); }
-.budget-card.selected { border-color: var(--gold); background: rgba(184,151,90,0.06); }
+.budget-card.selected { border-color: var(--gold); background: rgba(184,151,90,0.08); }
 .budget-amount {
   font-family: var(--font-display);
   font-size: 21px;
-  color: var(--cream);
+  color: var(--charcoal);
   font-weight: 300;
   margin-bottom: 5px;
 }
@@ -1350,22 +1350,22 @@ margin: 32px 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(28,28,26,0.12);
   padding: 17px 22px;
   cursor: pointer;
   transition: border-color 0.3s ease, background 0.3s ease;
 }
 .timeline-card:hover { border-color: rgba(184,151,90,0.35); }
-.timeline-card.selected { border-color: var(--gold); background: rgba(184,151,90,0.06); }
+.timeline-card.selected { border-color: var(--gold); background: rgba(184,151,90,0.08); }
 .timeline-label {
   font-size: 12px;
   letter-spacing: 0.07em;
-  color: var(--cream);
+  color: var(--charcoal);
 }
 .timeline-dot {
   width: 16px;
   height: 16px;
-  border: 1px solid rgba(255,255,255,0.2);
+  border: 1px solid rgba(28,28,26,0.2);
   border-radius: 50%;
   flex-shrink: 0;
   transition: all 0.25s ease;
@@ -1377,7 +1377,7 @@ margin: 32px 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(28,28,26,0.12);
   padding: 20px 22px;
   cursor: pointer;
   transition: border-color 0.3s ease;
@@ -1386,12 +1386,12 @@ margin: 32px 0;
 .toggle-row:hover { border-color: rgba(184,151,90,0.35); }
 .toggle-row.active { border-color: rgba(184,151,90,0.4); }
 .toggle-text { flex: 1; }
-.toggle-label { font-size: 12px; letter-spacing: 0.07em; color: var(--cream); }
+.toggle-label { font-size: 12px; letter-spacing: 0.07em; color: var(--charcoal); }
 .toggle-sub { font-size: 10px; color: var(--warm-gray); margin-top: 3px; letter-spacing: 0.04em; }
 .toggle-switch {
   width: 44px;
   height: 24px;
-  background: rgba(255,255,255,0.12);
+  background: rgba(28,28,26,0.15);
   border-radius: 12px;
   position: relative;
   flex-shrink: 0;
@@ -1413,8 +1413,8 @@ margin: 32px 0;
 .quiz-modal-footer {
   position: sticky;
   bottom: 0;
-  background: var(--charcoal);
-  border-top: 1px solid rgba(255,255,255,0.06);
+  background: var(--warm-white);
+  border-top: 1px solid rgba(28,28,26,0.1);
   padding: 22px 60px;
   display: flex;
   justify-content: space-between;
@@ -1432,7 +1432,7 @@ margin: 32px 0;
   transition: color 0.3s ease;
   padding: 0;
 }
-.quiz-btn-back:hover { color: var(--cream); }
+.quiz-btn-back:hover { color: var(--charcoal); }
 .quiz-btn-back:disabled { opacity: 0; pointer-events: none; }
 .quiz-btn-next {
   background: var(--gold);
@@ -1452,9 +1452,9 @@ margin: 32px 0;
 
 /* Validation error */
 .quiz-error {
-  background: rgba(200,60,60,0.1);
-  border: 1px solid rgba(200,60,60,0.3);
-  color: rgba(255,140,140,0.9);
+  background: rgba(200,60,60,0.07);
+  border: 1px solid rgba(200,60,60,0.25);
+  color: rgba(160,30,30,0.9);
   font-size: 11px;
   letter-spacing: 0.04em;
   padding: 12px 18px;
@@ -1471,7 +1471,7 @@ margin: 32px 0;
 .quiz-spinner {
   width: 44px;
   height: 44px;
-  border: 1px solid rgba(184,151,90,0.25);
+  border: 1px solid rgba(184,151,90,0.3);
   border-top-color: var(--gold);
   border-radius: 50%;
   animation: qspin 0.9s linear infinite;
@@ -1483,7 +1483,7 @@ margin: 32px 0;
   font-size: 30px;
   font-weight: 300;
   font-style: italic;
-  color: var(--cream);
+  color: var(--charcoal);
   margin-bottom: 12px;
 }
 .quiz-loading-sub {
@@ -1493,7 +1493,8 @@ margin: 32px 0;
   color: var(--warm-gray);
 }
 
-/* Results */
+/* Results — dark reveal */
+.quiz-step[data-step="results"] { background: var(--charcoal); }
 .quiz-results-body {
   padding: 0;
 }
@@ -1976,7 +1977,7 @@ margin: 32px 0;
           <label class="quiz-form-label" for="quizPhone">Phone <span style="opacity:0.5;">(optional — for SMS reminders)</span></label>
           <input type="tel" class="quiz-form-input" id="quizPhone" placeholder="(000) 000-0000" autocomplete="tel">
         </div>
-        <p style="font-size:9px;letter-spacing:0.1em;color:rgba(255,255,255,0.2);text-transform:uppercase;margin-top:8px;">
+        <p style="font-size:9px;letter-spacing:0.1em;color:var(--mid-gray);text-transform:uppercase;margin-top:8px;">
           ✦ Complimentary · No obligation · Your information is never shared
         </p>
       </div>
