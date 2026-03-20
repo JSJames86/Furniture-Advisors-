@@ -1037,6 +1037,595 @@ margin: 32px 0;
   .mobile-menu .mobile-link { font-size: 30px; }
 }
 
+/* ═══════════════════════════════════════════════════════════
+   QUIZ MODAL
+═══════════════════════════════════════════════════════════ */
+
+.quiz-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 8, 0.96);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  backdrop-filter: blur(10px);
+}
+.quiz-modal-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.quiz-modal {
+  background: var(--charcoal);
+  max-width: 720px;
+  width: 100%;
+  max-height: 92vh;
+  overflow-y: auto;
+  position: relative;
+  transform: translateY(28px);
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  scrollbar-width: none;
+}
+.quiz-modal::-webkit-scrollbar { display: none; }
+.quiz-modal-overlay.open .quiz-modal { transform: translateY(0); }
+
+/* Progress */
+.quiz-progress-bar {
+  height: 2px;
+  background: rgba(255,255,255,0.07);
+  overflow: hidden;
+}
+.quiz-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.quiz-modal-header {
+  position: sticky;
+  top: 0;
+  background: var(--charcoal);
+  z-index: 10;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.quiz-modal-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 48px;
+}
+.quiz-step-label {
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.quiz-close-btn {
+  background: none;
+  border: none;
+  color: var(--warm-gray);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px 6px;
+  transition: color 0.25s ease;
+  line-height: 1;
+  font-weight: 300;
+}
+.quiz-close-btn:hover { color: var(--cream); }
+
+/* Steps */
+.quiz-step { display: none; }
+.quiz-step.active { display: block; }
+.quiz-step-body { padding: 52px 60px 40px; }
+
+.quiz-q-eyebrow {
+  font-size: 9px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.quiz-q-eyebrow::before {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: var(--gold);
+  flex-shrink: 0;
+}
+.quiz-q-title {
+  font-family: var(--font-display);
+  font-size: clamp(26px, 3.5vw, 42px);
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 1.12;
+  margin-bottom: 8px;
+}
+.quiz-q-title em { font-style: italic; color: var(--gold-light); }
+.quiz-q-sub {
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: var(--warm-gray);
+  margin-bottom: 36px;
+  line-height: 1.8;
+}
+
+/* Choice cards — style questions */
+.choice-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.choice-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 20px 24px;
+  cursor: pointer;
+  transition: border-color 0.3s ease, background 0.3s ease;
+  overflow: hidden;
+}
+.choice-card::after {
+  content: '';
+  position: absolute;
+  left: 0; top: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--gold);
+  transform: scaleY(0);
+  transition: transform 0.3s ease;
+  transform-origin: bottom;
+}
+.choice-card:hover { border-color: rgba(184,151,90,0.35); }
+.choice-card.selected { border-color: var(--gold); background: rgba(184,151,90,0.06); }
+.choice-card.selected::after { transform: scaleY(1); }
+.choice-swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.choice-text { flex: 1; }
+.choice-name {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--cream);
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+.choice-desc {
+  font-size: 11px;
+  line-height: 1.65;
+  color: var(--warm-gray);
+  letter-spacing: 0.03em;
+}
+.choice-check {
+  width: 20px;
+  height: 20px;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: transparent;
+  flex-shrink: 0;
+  transition: all 0.25s ease;
+}
+.choice-card.selected .choice-check {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--charcoal);
+}
+
+/* Modal form inputs */
+.quiz-form-row { margin-bottom: 28px; }
+.quiz-form-label {
+  display: block;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--warm-gray);
+  margin-bottom: 12px;
+}
+.quiz-form-input,
+.quiz-form-select {
+  width: 100%;
+  padding: 14px 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255,255,255,0.14);
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--cream);
+  outline: none;
+  transition: border-color 0.3s ease;
+  letter-spacing: 0.04em;
+}
+.quiz-form-input:focus,
+.quiz-form-select:focus { border-color: var(--gold); }
+.quiz-form-input::placeholder { color: rgba(255,255,255,0.2); }
+.quiz-form-select { appearance: none; cursor: pointer; }
+.quiz-form-select option { background: #1c1c1a; color: var(--cream); }
+.quiz-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+.quiz-form-textarea {
+  width: 100%;
+  padding: 14px 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255,255,255,0.14);
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--cream);
+  outline: none;
+  resize: none;
+  letter-spacing: 0.04em;
+  line-height: 1.8;
+  transition: border-color 0.3s ease;
+}
+.quiz-form-textarea:focus { border-color: var(--gold); }
+.quiz-form-textarea::placeholder { color: rgba(255,255,255,0.2); }
+
+/* Checkbox group */
+.checkbox-group { display: flex; flex-direction: column; gap: 10px; }
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 18px 20px;
+  cursor: pointer;
+  transition: border-color 0.3s ease, background 0.3s ease;
+  user-select: none;
+}
+.checkbox-item:hover { border-color: rgba(184,151,90,0.35); }
+.checkbox-item.selected { border-color: var(--gold); background: rgba(184,151,90,0.06); }
+.checkbox-box {
+  width: 18px;
+  height: 18px;
+  border: 1px solid rgba(255,255,255,0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 10px;
+  color: transparent;
+  transition: all 0.25s ease;
+}
+.checkbox-item.selected .checkbox-box {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--charcoal);
+}
+.checkbox-label {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--cream);
+}
+.checkbox-sub {
+  font-size: 10px;
+  color: var(--warm-gray);
+  letter-spacing: 0.04em;
+  margin-top: 2px;
+}
+
+/* Budget cards */
+.budget-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 36px; }
+.budget-card {
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 24px 20px;
+  cursor: pointer;
+  transition: border-color 0.3s ease, background 0.3s ease;
+  text-align: center;
+}
+.budget-card:hover { border-color: rgba(184,151,90,0.35); }
+.budget-card.selected { border-color: var(--gold); background: rgba(184,151,90,0.06); }
+.budget-amount {
+  font-family: var(--font-display);
+  font-size: 21px;
+  color: var(--cream);
+  font-weight: 300;
+  margin-bottom: 5px;
+}
+.budget-tag {
+  font-size: 8px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--warm-gray);
+}
+
+/* Timeline */
+.timeline-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
+.timeline-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 17px 22px;
+  cursor: pointer;
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+.timeline-card:hover { border-color: rgba(184,151,90,0.35); }
+.timeline-card.selected { border-color: var(--gold); background: rgba(184,151,90,0.06); }
+.timeline-label {
+  font-size: 12px;
+  letter-spacing: 0.07em;
+  color: var(--cream);
+}
+.timeline-dot {
+  width: 16px;
+  height: 16px;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: all 0.25s ease;
+}
+.timeline-card.selected .timeline-dot { background: var(--gold); border-color: var(--gold); }
+
+/* Financing toggle */
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 20px 22px;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+  user-select: none;
+}
+.toggle-row:hover { border-color: rgba(184,151,90,0.35); }
+.toggle-row.active { border-color: rgba(184,151,90,0.4); }
+.toggle-text { flex: 1; }
+.toggle-label { font-size: 12px; letter-spacing: 0.07em; color: var(--cream); }
+.toggle-sub { font-size: 10px; color: var(--warm-gray); margin-top: 3px; letter-spacing: 0.04em; }
+.toggle-switch {
+  width: 44px;
+  height: 24px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 12px;
+  position: relative;
+  flex-shrink: 0;
+  margin-left: 20px;
+  transition: background 0.3s ease;
+}
+.toggle-row.active .toggle-switch { background: var(--gold); }
+.toggle-thumb {
+  position: absolute;
+  top: 3px; left: 3px;
+  width: 18px; height: 18px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+.toggle-row.active .toggle-thumb { transform: translateX(20px); }
+
+/* Footer nav */
+.quiz-modal-footer {
+  position: sticky;
+  bottom: 0;
+  background: var(--charcoal);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 22px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.quiz-btn-back {
+  background: none;
+  border: none;
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--warm-gray);
+  cursor: pointer;
+  transition: color 0.3s ease;
+  padding: 0;
+}
+.quiz-btn-back:hover { color: var(--cream); }
+.quiz-btn-back:disabled { opacity: 0; pointer-events: none; }
+.quiz-btn-next {
+  background: var(--gold);
+  border: 1px solid var(--gold);
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--charcoal);
+  padding: 15px 40px;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+.quiz-btn-next:hover { background: transparent; color: var(--gold); }
+.quiz-btn-next:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Validation error */
+.quiz-error {
+  background: rgba(200,60,60,0.1);
+  border: 1px solid rgba(200,60,60,0.3);
+  color: rgba(255,140,140,0.9);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  padding: 12px 18px;
+  margin-bottom: 20px;
+  display: none;
+}
+.quiz-error.visible { display: block; }
+
+/* Loading */
+.quiz-loading-body {
+  text-align: center;
+  padding: 80px 60px;
+}
+.quiz-spinner {
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(184,151,90,0.25);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: qspin 0.9s linear infinite;
+  margin: 0 auto 32px;
+}
+@keyframes qspin { to { transform: rotate(360deg); } }
+.quiz-loading-title {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--cream);
+  margin-bottom: 12px;
+}
+.quiz-loading-sub {
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--warm-gray);
+}
+
+/* Results */
+.quiz-results-body {
+  padding: 0;
+}
+.results-profile-bar {
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+}
+.results-inner-pad { padding: 52px 60px 56px; }
+.results-badge {
+  display: inline-block;
+  font-size: 8px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid rgba(184,151,90,0.35);
+  padding: 7px 14px;
+  margin-bottom: 28px;
+}
+.results-title {
+  font-family: var(--font-display);
+  font-size: clamp(30px, 4vw, 50px);
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 1.1;
+  margin-bottom: 6px;
+}
+.results-title em { font-style: italic; color: var(--gold-light); }
+.results-tagline {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--warm-gray);
+  margin-bottom: 28px;
+}
+.results-desc {
+  font-size: 13px;
+  line-height: 2;
+  color: rgba(247,243,238,0.72);
+  margin-bottom: 32px;
+  letter-spacing: 0.04em;
+  max-width: 520px;
+}
+.results-keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 40px;
+}
+.results-keyword {
+  font-size: 8px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  border: 1px solid rgba(184,151,90,0.28);
+  padding: 6px 14px;
+}
+.results-divider {
+  height: 1px;
+  background: rgba(255,255,255,0.07);
+  margin-bottom: 32px;
+}
+.results-cta-label {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--warm-gray);
+  margin-bottom: 20px;
+}
+.results-actions { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+.results-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--gold);
+  color: var(--charcoal);
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 500;
+  padding: 17px 36px;
+  text-decoration: none;
+  border: 1px solid var(--gold);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+.results-btn-primary:hover { background: transparent; color: var(--gold); }
+.results-btn-ghost {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--warm-gray);
+  background: none;
+  border: none;
+  font-family: var(--font-body);
+  cursor: pointer;
+  padding: 0;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.results-btn-ghost:hover { color: var(--cream); }
+.results-btn-ghost::after { content: '→'; transition: transform 0.3s ease; }
+.results-btn-ghost:hover::after { transform: translateX(4px); }
+.results-note {
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.2);
+  margin-top: 24px;
+  text-align: center;
+}
+
+/* ─── Modal responsive ─── */
+@media (max-width: 768px) {
+  .quiz-modal-meta { padding: 16px 20px; }
+  .quiz-step-body { padding: 36px 20px 28px; }
+  .quiz-modal-footer { padding: 18px 20px; }
+  .quiz-form-grid { grid-template-columns: 1fr; gap: 0; }
+  .budget-grid { grid-template-columns: 1fr 1fr; }
+  .results-inner-pad { padding: 36px 20px 44px; }
+  .results-actions { flex-direction: column; align-items: stretch; }
+  .results-btn-primary { justify-content: center; text-align: center; }
+  .quiz-loading-body { padding: 60px 20px; }
+  .quiz-modal-overlay { padding: 0; align-items: flex-end; }
+  .quiz-modal { max-height: 96vh; border-radius: 0; }
+}
+@media (max-width: 480px) {
+  .budget-grid { grid-template-columns: 1fr; }
+}
+
 </style>
 </head>
 <body>
@@ -1069,6 +1658,372 @@ margin: 32px 0;
   <a href="#quiz" class="mobile-link mobile-cta">Book Consultation</a>
 </div>
 
+<!-- ═══════════════════════════════════════
+     STYLE QUIZ MODAL
+═══════════════════════════════════════ -->
+<div class="quiz-modal-overlay" id="quizModal" role="dialog" aria-modal="true" aria-label="Style Quiz">
+  <div class="quiz-modal" id="quizModalInner">
+
+    <!-- Header -->
+    <div class="quiz-modal-header">
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quizProgressFill"></div></div>
+      <div class="quiz-modal-meta">
+        <span class="quiz-step-label" id="quizStepLabel">Step 1 of 7</span>
+        <button class="quiz-close-btn" id="quizClose" aria-label="Close quiz">✕</button>
+      </div>
+    </div>
+
+    <!-- ── Step 1: Aesthetic ── -->
+    <div class="quiz-step active" data-step="1">
+      <div class="quiz-step-body">
+        <div class="quiz-q-eyebrow">Your Aesthetic</div>
+        <h2 class="quiz-q-title">What draws you in <em>immediately?</em></h2>
+        <p class="quiz-q-sub">Choose the space that feels most like the home you're creating.</p>
+        <div class="quiz-error" id="stepError1">Please select an option to continue.</div>
+        <div class="choice-list">
+          <div class="choice-card" data-q="aesthetic" data-profile="modern-luxe">
+            <div class="choice-swatch" style="background: linear-gradient(135deg,#2C3E35,#B8975A)"></div>
+            <div class="choice-text">
+              <div class="choice-name">Modern Luxe</div>
+              <div class="choice-desc">A gallery-like space — sculptural pieces, warm metallics, and every detail considered.</div>
+            </div>
+            <div class="choice-check">✓</div>
+          </div>
+          <div class="choice-card" data-q="aesthetic" data-profile="warm-traditional">
+            <div class="choice-swatch" style="background: linear-gradient(135deg,#4A3728,#C5A882)"></div>
+            <div class="choice-text">
+              <div class="choice-name">Warm Traditional</div>
+              <div class="choice-desc">Deep wood tones, rolled arms, layered textiles — rooms that feel collected over time.</div>
+            </div>
+            <div class="choice-check">✓</div>
+          </div>
+          <div class="choice-card" data-q="aesthetic" data-profile="coastal-serene">
+            <div class="choice-swatch" style="background: linear-gradient(135deg,#7AA8B8,#E8DDD3)"></div>
+            <div class="choice-text">
+              <div class="choice-name">Coastal Serene</div>
+              <div class="choice-desc">Light, airy rooms with natural textures — the feeling of a permanent, effortless vacation.</div>
+            </div>
+            <div class="choice-check">✓</div>
+          </div>
+          <div class="choice-card" data-q="aesthetic" data-profile="urban-glam">
+            <div class="choice-swatch" style="background: linear-gradient(135deg,#1C2535,#B8975A)"></div>
+            <div class="choice-text">
+              <div class="choice-name">Urban Glam</div>
+              <div class="choice-desc">Dramatic dark walls, velvet upholstery, brass accents — spaces that command attention.</div>
+            </div>
+            <div class="choice-check">✓</div>
+          </div>
+          <div class="choice-card" data-q="aesthetic" data-profile="rustic-refined">
+            <div class="choice-swatch" style="background: linear-gradient(135deg,#3D3530,#A08060)"></div>
+            <div class="choice-text">
+              <div class="choice-name">Rustic Refined</div>
+              <div class="choice-desc">Raw wood, stone, and handcrafted details — authentic warmth with an organic soul.</div>
+            </div>
+            <div class="choice-check">✓</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Step 2: Color Palette ── -->
+    <div class="quiz-step" data-step="2">
+      <div class="quiz-step-body">
+        <div class="quiz-q-eyebrow">Color Direction</div>
+        <h2 class="quiz-q-title">Which palette speaks to <em>your space?</em></h2>
+        <p class="quiz-q-sub">Think about the colors you're drawn to — not what's trending, what feels like you.</p>
+        <div class="quiz-error" id="stepError2">Please select a palette to continue.</div>
+        <div class="choice-list">
+          <div class="choice-card" data-q="palette" data-profile="modern-luxe">
+            <div class="choice-swatch" style="background: linear-gradient(135deg,#1C1C1A,#B8975A)"></div>
+            <div class="choice-text">
+              <div class="choice-name">Charcoal, Ivory &amp; Warm Gold</div>
+              <div class="choice-desc">A sophisticated neutral base with metallic warmth that elevates every surface.</div>
+            </div>
+            <div class="choice-check">✓</div>
+          </div>
+          <div class="choice-card" data-q="palette" data-profile="warm-traditional">
+            <div class="choice-swatch" style="background: linear-gradient(135deg,#3D2B1F,#8B6F4E)"></div>
+            <div class="choice-text">
+              <div class="choice-name">Navy, Burgundy &amp; Warm Walnut</div>
+              <div class="choice-desc">Rich, saturated tones grounded in deep wood finishes — dignified and enduring.</div>
+            </div>
+            <div class="choice-check">✓</div>
+          </div>
+          <div class="choice-card" data-q="palette" data-profile="coastal-serene">
+            <div class="choice-swatch" style="background: linear-gradient(135deg,#B8D4D8,#E8DDD3)"></div>
+            <div class="choice-text">
+              <div class="choice-name">Soft White, Sandy Beige &amp; Ocean Blue</div>
+              <div class="choice-desc">Pale, breathing tones borrowed from sand, sea, and bleached driftwood.</div>
+            </div>
+            <div class="choice-check">✓</div>
+          </div>
+          <div class="choice-card" data-q="palette" data-profile="urban-glam">
+            <div class="choice-swatch" style="background: linear-gradient(135deg,#1A1A2E,#B08D57)"></div>
+            <div class="choice-text">
+              <div class="choice-name">Midnight, Jewel Tones &amp; Brushed Brass</div>
+              <div class="choice-desc">Deep, dramatic backdrops punctuated with emerald, sapphire, or amethyst accents.</div>
+            </div>
+            <div class="choice-check">✓</div>
+          </div>
+          <div class="choice-card" data-q="palette" data-profile="rustic-refined">
+            <div class="choice-swatch" style="background: linear-gradient(135deg,#7A5C44,#D4A574)"></div>
+            <div class="choice-text">
+              <div class="choice-name">Terra Cotta, Aged Leather &amp; Warm Stone</div>
+              <div class="choice-desc">Earthy, unpretentious hues that feel connected to the natural world.</div>
+            </div>
+            <div class="choice-check">✓</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Step 3: Personality ── -->
+    <div class="quiz-step" data-step="3">
+      <div class="quiz-step-body">
+        <div class="quiz-q-eyebrow">Your Style Personality</div>
+        <h2 class="quiz-q-title">How would you describe your <em>personal style?</em></h2>
+        <p class="quiz-q-sub">Not aspirational — the way your closest friends would actually describe you.</p>
+        <div class="quiz-error" id="stepError3">Please select an option to continue.</div>
+        <div class="choice-list">
+          <div class="choice-card" data-q="personality" data-profile="modern-luxe">
+            <div class="choice-swatch" style="background: linear-gradient(135deg,#2C3E35,#B8975A)"></div>
+            <div class="choice-text">
+              <div class="choice-name">Polished &amp; Intentional</div>
+              <div class="choice-desc">Every detail is considered. You're drawn to quality over quantity — refined, never overdone.</div>
+            </div>
+            <div class="choice-check">✓</div>
+          </div>
+          <div class="choice-card" data-q="personality" data-profile="warm-traditional">
+            <div class="choice-swatch" style="background: linear-gradient(135deg,#4A3728,#C5A882)"></div>
+            <div class="choice-text">
+              <div class="choice-name">Classic &amp; Comfortable</div>
+              <div class="choice-desc">You value tradition, enduring quality, and spaces that feel welcoming to everyone who walks in.</div>
+            </div>
+            <div class="choice-check">✓</div>
+          </div>
+          <div class="choice-card" data-q="personality" data-profile="coastal-serene">
+            <div class="choice-swatch" style="background: linear-gradient(135deg,#7AA8B8,#E8DDD3)"></div>
+            <div class="choice-text">
+              <div class="choice-name">Effortless &amp; Relaxed</div>
+              <div class="choice-desc">You gravitate toward calm. Your ideal space feels breathable, unhurried, and quietly beautiful.</div>
+            </div>
+            <div class="choice-check">✓</div>
+          </div>
+          <div class="choice-card" data-q="personality" data-profile="urban-glam">
+            <div class="choice-swatch" style="background: linear-gradient(135deg,#1C2535,#B8975A)"></div>
+            <div class="choice-text">
+              <div class="choice-name">Bold &amp; Glamorous</div>
+              <div class="choice-desc">You love drama and presence. Your home should make a statement the moment someone walks in.</div>
+            </div>
+            <div class="choice-check">✓</div>
+          </div>
+          <div class="choice-card" data-q="personality" data-profile="rustic-refined">
+            <div class="choice-swatch" style="background: linear-gradient(135deg,#3D3530,#A08060)"></div>
+            <div class="choice-text">
+              <div class="choice-name">Authentic &amp; Grounded</div>
+              <div class="choice-desc">Real materials over trends. You want your home to feel rooted, honest, and genuinely lived-in.</div>
+            </div>
+            <div class="choice-check">✓</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Step 4: Room Details ── -->
+    <div class="quiz-step" data-step="4">
+      <div class="quiz-step-body">
+        <div class="quiz-q-eyebrow">Your Space</div>
+        <h2 class="quiz-q-title">Tell us about the <em>room.</em></h2>
+        <p class="quiz-q-sub">Approximate dimensions are fine — your advisor will confirm everything at the consultation.</p>
+        <div class="quiz-error" id="stepError4">Please select the room type to continue.</div>
+        <div class="quiz-form-row">
+          <label class="quiz-form-label" for="quizRoomType">Room You're Designing</label>
+          <select class="quiz-form-select" id="quizRoomType">
+            <option value="">Select a room</option>
+            <option value="Living Room">Living Room</option>
+            <option value="Bedroom">Bedroom</option>
+            <option value="Dining Room">Dining Room</option>
+            <option value="Home Office">Home Office</option>
+            <option value="Multiple Rooms">Multiple Rooms</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="quiz-form-grid">
+          <div class="quiz-form-row">
+            <label class="quiz-form-label" for="quizRoomLength">Length (feet)</label>
+            <input type="number" class="quiz-form-input" id="quizRoomLength" placeholder="e.g. 18" min="1" max="200">
+          </div>
+          <div class="quiz-form-row">
+            <label class="quiz-form-label" for="quizRoomWidth">Width (feet)</label>
+            <input type="number" class="quiz-form-input" id="quizRoomWidth" placeholder="e.g. 14" min="1" max="200">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Step 5: Lifestyle ── -->
+    <div class="quiz-step" data-step="5">
+      <div class="quiz-step-body">
+        <div class="quiz-q-eyebrow">Your Household</div>
+        <h2 class="quiz-q-title">Who shares <em>your space?</em></h2>
+        <p class="quiz-q-sub">This shapes our fabric and finish recommendations — durability, easy-clean options, and more.</p>
+        <div class="checkbox-group" style="margin-bottom: 32px;">
+          <div class="checkbox-item" data-household="pets">
+            <div class="checkbox-box">✓</div>
+            <div>
+              <div class="checkbox-label">Pets</div>
+              <div class="checkbox-sub">Dogs, cats, or other animals in the home</div>
+            </div>
+          </div>
+          <div class="checkbox-item" data-household="kids">
+            <div class="checkbox-box">✓</div>
+            <div>
+              <div class="checkbox-label">Children</div>
+              <div class="checkbox-sub">Kids under 12 in the household</div>
+            </div>
+          </div>
+          <div class="checkbox-item" data-household="neither">
+            <div class="checkbox-box">✓</div>
+            <div>
+              <div class="checkbox-label">Just Adults</div>
+              <div class="checkbox-sub">No kids or pets — or they're all grown</div>
+            </div>
+          </div>
+        </div>
+        <div class="quiz-form-row">
+          <label class="quiz-form-label" for="quizNotes">Anything else we should know? <span style="opacity:0.5;">(optional)</span></label>
+          <textarea class="quiz-form-textarea" id="quizNotes" rows="3" placeholder="Allergies, mobility needs, specific concerns..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Step 6: Budget & Timeline ── -->
+    <div class="quiz-step" data-step="6">
+      <div class="quiz-step-body">
+        <div class="quiz-q-eyebrow">Investment &amp; Timeline</div>
+        <h2 class="quiz-q-title">What's your <em>investment range?</em></h2>
+        <p class="quiz-q-sub">Choose what feels realistic — your advisor will show you the best options within it.</p>
+        <div class="quiz-error" id="stepError6">Please select a budget range and timeline.</div>
+        <div class="budget-grid">
+          <div class="budget-card" data-q="budget" data-budget="$1,000 – $2,000">
+            <div class="budget-amount">$1k – $2k</div>
+            <div class="budget-tag">Getting Started</div>
+          </div>
+          <div class="budget-card" data-q="budget" data-budget="$2,000 – $4,000">
+            <div class="budget-amount">$2k – $4k</div>
+            <div class="budget-tag">Solid Foundation</div>
+          </div>
+          <div class="budget-card" data-q="budget" data-budget="$4,000 – $8,000">
+            <div class="budget-amount">$4k – $8k</div>
+            <div class="budget-tag">Full Room Design</div>
+          </div>
+          <div class="budget-card" data-q="budget" data-budget="$8,000+">
+            <div class="budget-amount">$8k+</div>
+            <div class="budget-tag">Complete Transformation</div>
+          </div>
+        </div>
+        <div class="quiz-form-label" style="margin-bottom: 14px;">How soon are you looking to move forward?</div>
+        <div class="timeline-list">
+          <div class="timeline-card" data-q="timeline" data-timeline="As soon as possible">
+            <span class="timeline-label">As soon as possible</span>
+            <div class="timeline-dot"></div>
+          </div>
+          <div class="timeline-card" data-q="timeline" data-timeline="1–3 months">
+            <span class="timeline-label">Within 1–3 months</span>
+            <div class="timeline-dot"></div>
+          </div>
+          <div class="timeline-card" data-q="timeline" data-timeline="3–6 months">
+            <span class="timeline-label">In 3–6 months</span>
+            <div class="timeline-dot"></div>
+          </div>
+          <div class="timeline-card" data-q="timeline" data-timeline="Just exploring">
+            <span class="timeline-label">Just exploring for now</span>
+            <div class="timeline-dot"></div>
+          </div>
+        </div>
+        <div class="toggle-row" id="financingToggle">
+          <div class="toggle-text">
+            <div class="toggle-label">Interested in financing options?</div>
+            <div class="toggle-sub">0% financing available through Ashley Furniture</div>
+          </div>
+          <div class="toggle-switch"><div class="toggle-thumb"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Step 7: Contact ── -->
+    <div class="quiz-step" data-step="7">
+      <div class="quiz-step-body">
+        <div class="quiz-q-eyebrow">Almost Done</div>
+        <h2 class="quiz-q-title">Where should we send your <em>style profile?</em></h2>
+        <p class="quiz-q-sub">Your personalized furniture plan will be delivered here — and your advisor will reach out to schedule your VIP consultation.</p>
+        <div class="quiz-error" id="stepError7">Please fill in your name and a valid email address.</div>
+        <div class="quiz-form-grid">
+          <div class="quiz-form-row">
+            <label class="quiz-form-label" for="quizFirstName">First Name</label>
+            <input type="text" class="quiz-form-input" id="quizFirstName" placeholder="First name" autocomplete="given-name">
+          </div>
+          <div class="quiz-form-row">
+            <label class="quiz-form-label" for="quizLastName">Last Name</label>
+            <input type="text" class="quiz-form-input" id="quizLastName" placeholder="Last name" autocomplete="family-name">
+          </div>
+        </div>
+        <div class="quiz-form-row">
+          <label class="quiz-form-label" for="quizEmail">Email Address</label>
+          <input type="email" class="quiz-form-input" id="quizEmail" placeholder="your@email.com" autocomplete="email">
+        </div>
+        <div class="quiz-form-row">
+          <label class="quiz-form-label" for="quizPhone">Phone <span style="opacity:0.5;">(optional — for SMS reminders)</span></label>
+          <input type="tel" class="quiz-form-input" id="quizPhone" placeholder="(000) 000-0000" autocomplete="tel">
+        </div>
+        <p style="font-size:9px;letter-spacing:0.1em;color:rgba(255,255,255,0.2);text-transform:uppercase;margin-top:8px;">
+          ✦ Complimentary · No obligation · Your information is never shared
+        </p>
+      </div>
+    </div>
+
+    <!-- ── Loading ── -->
+    <div class="quiz-step" data-step="loading">
+      <div class="quiz-loading-body">
+        <div class="quiz-spinner"></div>
+        <div class="quiz-loading-title">Curating your profile…</div>
+        <div class="quiz-loading-sub">Matching your answers to your signature aesthetic</div>
+      </div>
+    </div>
+
+    <!-- ── Results ── -->
+    <div class="quiz-step" data-step="results">
+      <div class="quiz-results-body">
+        <div class="results-profile-bar" id="resultsProfileBar"></div>
+        <div class="results-inner-pad">
+          <div class="results-badge" id="resultsBadge">Your Style Profile</div>
+          <h2 class="results-title">
+            <span id="resultsGreeting">You're a</span><br>
+            <em id="resultsProfileName">Modern Luxe Visionary</em>
+          </h2>
+          <div class="results-tagline" id="resultsTagline">Clean Lines · Elevated Finishes · Curated Details</div>
+          <p class="results-desc" id="resultsDesc"></p>
+          <div class="results-keywords" id="resultsKeywords"></div>
+          <div class="results-divider"></div>
+          <div class="results-cta-label">Your next step</div>
+          <div class="results-actions">
+            <a href="#" class="results-btn-primary" id="resultsViewBtn">View Full Profile &amp; Book →</a>
+            <a href="#" class="results-btn-ghost" id="resultsCalendlyBtn">Book appointment directly</a>
+          </div>
+          <p class="results-note">Your personalized furniture plan has been sent to your email</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer nav -->
+    <div class="quiz-modal-footer" id="quizFooter">
+      <button class="quiz-btn-back" id="quizBack" disabled>← Back</button>
+      <button class="quiz-btn-next" id="quizNext">Continue →</button>
+    </div>
+
+  </div>
+</div>
+
 <!-- HERO -->
 
 <section class="hero">
@@ -1083,7 +2038,7 @@ margin: 32px 0;
       A personalized furniture advisory experience built around your life, your space, and your vision — before you ever step into the showroom.
     </p>
     <div class="hero-actions">
-      <a href="#quiz" class="btn-primary"><span>Take the Style Quiz</span></a>
+      <a href="#" class="btn-primary open-quiz-btn"><span>Take the Style Quiz</span></a>
       <a href="#process" class="btn-ghost">How it works</a>
     </div>
 
@@ -1377,7 +2332,7 @@ margin: 32px 0;
           <div class="feature-text">VIP appointment booking</div>
         </div>
       </div>
-      <a href="#" class="btn-quiz">Start Your Style Quiz →</a>
+      <a href="#" class="btn-quiz open-quiz-btn">Start Your Style Quiz →</a>
     </div>
 
     <div class="quiz-card reveal">
@@ -1465,7 +2420,7 @@ margin: 32px 0;
   <h2 class="cta-title reveal">Your room is waiting<br>to become <em>remarkable.</em></h2>
   <p class="cta-sub reveal">Take the 2-minute style quiz. Receive your personalized furniture plan. Book your VIP consultation. Walk in ready to say yes.</p>
   <div class="cta-buttons reveal">
-    <a href="#quiz" class="btn-primary"><span>Take the Style Quiz</span></a>
+    <a href="#" class="btn-primary open-quiz-btn"><span>Take the Style Quiz</span></a>
     <a href="#quiz" class="btn-ghost" style="color: var(--mid-gray);">Book directly</a>
   </div>
 </section>
@@ -1576,6 +2531,311 @@ margin: 32px 0;
   // Close menu when a mobile link is clicked
   mobileMenu.querySelectorAll('a').forEach(a => {
     a.addEventListener('click', closeMobileMenu);
+  });
+
+  // ═══════════════════════════════════════════════════════════
+  //  STYLE QUIZ MODAL
+  // ═══════════════════════════════════════════════════════════
+
+  const TOTAL_QUIZ_STEPS = 7;
+  let quizCurrentStep = 1;
+
+  // Inline profile data for results display (matches /src/lib/style-profiles.ts)
+  const STYLE_PROFILES = {
+    'modern-luxe': {
+      label: 'Modern Luxe Visionary',
+      tagline: 'Clean Lines · Elevated Finishes · Curated Details',
+      description: 'Your space is intentional and refined — sculptural forms, performance fabrics, and a neutral palette punctuated with warm metallic accents. Every piece has a reason for being there.',
+      keywords: ['Sculptural Forms', 'Performance Fabrics', 'Warm Metallics', 'Neutral Palette', 'Statement Lighting', 'Clean Lines'],
+      barColor: 'linear-gradient(90deg, #2C3E35, #B8975A)'
+    },
+    'warm-traditional': {
+      label: 'Warm Traditionalist',
+      tagline: 'Rich Textures · Timeless Comfort · Layered Depth',
+      description: 'Deep wood tones, rolled arms, and rooms that feel layered and lived-in. Your home feels like it\'s been collected over years — pieces that tell stories and furnishings built to last generations.',
+      keywords: ['Rich Wood Tones', 'Rolled Arms', 'Layered Textiles', 'Timeless Quality', 'Warm Comfort', 'Classic Forms'],
+      barColor: 'linear-gradient(90deg, #4A3728, #C5A882)'
+    },
+    'coastal-serene': {
+      label: 'Coastal Serene',
+      tagline: 'Light · Airy · Natural · Effortless',
+      description: 'Bleached wood, linen textures, and a palette borrowed from sand, sea, and sky. Your space feels like a permanent vacation — light, breathable, and quietly beautiful without trying too hard.',
+      keywords: ['Bleached Wood', 'Linen Textures', 'Natural Light', 'Soft Palette', 'Breezy Comfort', 'Organic Forms'],
+      barColor: 'linear-gradient(90deg, #7AA8B8, #E8DDD3)'
+    },
+    'urban-glam': {
+      label: 'Urban Glam',
+      tagline: 'Drama · Contrast · Statement · Presence',
+      description: 'Velvet upholstery, brass accents, and spaces that make an unmistakable impression. Bold enough to be memorable, sophisticated enough to never feel over the top.',
+      keywords: ['Velvet Upholstery', 'Brass Accents', 'Jewel Tones', 'High Contrast', 'Statement Pieces', 'Dramatic Lighting'],
+      barColor: 'linear-gradient(90deg, #1C2535, #B8975A)'
+    },
+    'rustic-refined': {
+      label: 'Rustic Refined',
+      tagline: 'Organic · Grounded · Artisanal · Authentic',
+      description: 'Natural materials, handcrafted details, and the kind of warmth that turns a house into a home. Your space honors real materials — live-edge wood, woven textures, and forms rooted in the earth.',
+      keywords: ['Live-Edge Wood', 'Woven Textures', 'Natural Materials', 'Handcrafted Details', 'Earthy Warmth', 'Organic Forms'],
+      barColor: 'linear-gradient(90deg, #3D3530, #A08060)'
+    }
+  };
+
+  function openQuizModal() {
+    document.getElementById('quizModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    quizGoToStep(1);
+  }
+
+  function closeQuizModal() {
+    document.getElementById('quizModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function quizUpdateProgress() {
+    const fill = document.getElementById('quizProgressFill');
+    const label = document.getElementById('quizStepLabel');
+    const special = ['loading', 'results'];
+    if (special.includes(quizCurrentStep)) {
+      fill.style.width = '100%';
+      label.textContent = quizCurrentStep === 'loading' ? 'Analyzing your profile…' : 'Your Style Profile';
+    } else {
+      const pct = ((quizCurrentStep - 1) / TOTAL_QUIZ_STEPS) * 100;
+      fill.style.width = pct + '%';
+      label.textContent = 'Step ' + quizCurrentStep + ' of ' + TOTAL_QUIZ_STEPS;
+    }
+  }
+
+  function quizGoToStep(step) {
+    document.querySelectorAll('.quiz-step').forEach(el => el.classList.remove('active'));
+    const target = document.querySelector('[data-step="' + step + '"]');
+    if (target) target.classList.add('active');
+    quizCurrentStep = step;
+    quizUpdateProgress();
+
+    const footer = document.getElementById('quizFooter');
+    const backBtn = document.getElementById('quizBack');
+    const nextBtn = document.getElementById('quizNext');
+
+    if (step === 'loading' || step === 'results') {
+      footer.style.display = 'none';
+    } else {
+      footer.style.display = 'flex';
+      backBtn.disabled = (step === 1);
+      nextBtn.textContent = (step === TOTAL_QUIZ_STEPS) ? 'Get My Profile →' : 'Continue →';
+    }
+    document.getElementById('quizModalInner').scrollTop = 0;
+  }
+
+  function quizValidateStep(step) {
+    switch (step) {
+      case 1: return !!document.querySelector('.choice-card[data-q="aesthetic"].selected');
+      case 2: return !!document.querySelector('.choice-card[data-q="palette"].selected');
+      case 3: return !!document.querySelector('.choice-card[data-q="personality"].selected');
+      case 4: return document.getElementById('quizRoomType').value !== '';
+      case 5: return true;
+      case 6:
+        return !!document.querySelector('.budget-card.selected') &&
+               !!document.querySelector('.timeline-card.selected');
+      case 7:
+        var fn = document.getElementById('quizFirstName').value.trim();
+        var ln = document.getElementById('quizLastName').value.trim();
+        var em = document.getElementById('quizEmail').value.trim();
+        return fn.length > 0 && ln.length > 0 && /\S+@\S+\.\S+/.test(em);
+      default: return true;
+    }
+  }
+
+  function quizShowError(step) {
+    var el = document.getElementById('stepError' + step);
+    if (el) el.classList.add('visible');
+  }
+
+  function quizClearErrors() {
+    document.querySelectorAll('.quiz-error').forEach(el => el.classList.remove('visible'));
+  }
+
+  function quizNext() {
+    if (!quizValidateStep(quizCurrentStep)) {
+      quizShowError(quizCurrentStep);
+      return;
+    }
+    quizClearErrors();
+    if (quizCurrentStep === TOTAL_QUIZ_STEPS) {
+      quizSubmit();
+    } else {
+      quizGoToStep(quizCurrentStep + 1);
+    }
+  }
+
+  function quizBack() {
+    if (quizCurrentStep > 1) quizGoToStep(quizCurrentStep - 1);
+  }
+
+  function quizComputeProfile() {
+    var scores = { 'modern-luxe': 0, 'warm-traditional': 0, 'coastal-serene': 0, 'urban-glam': 0, 'rustic-refined': 0 };
+    ['aesthetic', 'palette', 'personality'].forEach(function(q) {
+      var card = document.querySelector('.choice-card[data-q="' + q + '"].selected');
+      if (card) scores[card.dataset.profile]++;
+    });
+    return Object.entries(scores).sort(function(a, b) { return b[1] - a[1]; })[0][0];
+  }
+
+  async function quizSubmit() {
+    var firstName = document.getElementById('quizFirstName').value.trim();
+    var lastName  = document.getElementById('quizLastName').value.trim();
+    var email     = document.getElementById('quizEmail').value.trim();
+    var phone     = document.getElementById('quizPhone').value.trim();
+
+    var roomType   = document.getElementById('quizRoomType').value;
+    var roomLength = parseFloat(document.getElementById('quizRoomLength').value) || undefined;
+    var roomWidth  = parseFloat(document.getElementById('quizRoomWidth').value) || undefined;
+    var notes      = document.getElementById('quizNotes').value.trim() || undefined;
+
+    var styleProfile = quizComputeProfile();
+
+    var budgetCard  = document.querySelector('.budget-card.selected');
+    var budgetRange = budgetCard ? budgetCard.dataset.budget : '';
+
+    var timelineCard = document.querySelector('.timeline-card.selected');
+    var timeline     = timelineCard ? timelineCard.dataset.timeline : '';
+
+    var householdType = [];
+    document.querySelectorAll('.checkbox-item.selected').forEach(function(item) {
+      householdType.push(item.dataset.household);
+    });
+    if (householdType.length === 0) householdType.push('neither');
+
+    var financingInterest = document.getElementById('financingToggle').classList.contains('active');
+
+    var payload = {
+      firstName, lastName, email,
+      phone: phone || undefined,
+      roomType,
+      roomLength, roomWidth,
+      styleProfile, budgetRange, timeline,
+      financingInterest, householdType,
+      notes,
+      leadSource: 'Style Quiz – Website'
+    };
+
+    quizGoToStep('loading');
+
+    try {
+      var res = await fetch('/api/submit-quiz', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      var data = await res.json();
+      if (data.success) {
+        quizShowResults(firstName, styleProfile, householdType);
+      } else {
+        // Fall back to local results so user isn't stuck
+        quizShowResults(firstName, styleProfile, householdType);
+      }
+    } catch (err) {
+      // Network error — still show results locally
+      quizShowResults(firstName, styleProfile, householdType);
+    }
+  }
+
+  function quizShowResults(firstName, styleProfile, householdType) {
+    var profile = STYLE_PROFILES[styleProfile];
+    var hasPets = householdType.includes('pets');
+    var hasKids = householdType.includes('kids');
+    var params  = new URLSearchParams({ name: firstName, pets: hasPets ? '1' : '0', kids: hasKids ? '1' : '0' });
+    var resultsUrl = '/results/' + styleProfile + '?' + params.toString();
+
+    document.getElementById('resultsProfileBar').style.background = profile.barColor;
+    document.getElementById('resultsBadge').textContent = 'Your Style Profile · ' + profile.label;
+    document.getElementById('resultsGreeting').textContent = firstName ? firstName + ', you\'re a' : 'You\'re a';
+    document.getElementById('resultsProfileName').textContent = profile.label;
+    document.getElementById('resultsTagline').textContent = profile.tagline;
+    document.getElementById('resultsDesc').textContent = profile.description;
+
+    var kwEl = document.getElementById('resultsKeywords');
+    kwEl.innerHTML = profile.keywords.map(function(k) {
+      return '<span class="results-keyword">' + k + '</span>';
+    }).join('');
+
+    document.getElementById('resultsViewBtn').href = resultsUrl;
+    document.getElementById('resultsCalendlyBtn').href = resultsUrl + '#book';
+
+    quizGoToStep('results');
+  }
+
+  // ── Wire up events ──────────────────────────────────────────
+
+  // Choice cards — single select per group
+  document.querySelectorAll('.choice-card').forEach(function(card) {
+    card.addEventListener('click', function() {
+      var q = card.dataset.q;
+      document.querySelectorAll('.choice-card[data-q="' + q + '"]').forEach(function(c) { c.classList.remove('selected'); });
+      card.classList.add('selected');
+      quizClearErrors();
+    });
+  });
+
+  // Budget cards
+  document.querySelectorAll('.budget-card').forEach(function(card) {
+    card.addEventListener('click', function() {
+      document.querySelectorAll('.budget-card').forEach(function(c) { c.classList.remove('selected'); });
+      card.classList.add('selected');
+      quizClearErrors();
+    });
+  });
+
+  // Timeline cards
+  document.querySelectorAll('.timeline-card').forEach(function(card) {
+    card.addEventListener('click', function() {
+      document.querySelectorAll('.timeline-card').forEach(function(c) { c.classList.remove('selected'); });
+      card.classList.add('selected');
+    });
+  });
+
+  // Household checkboxes — multi-select, but "neither" deselects others
+  document.querySelectorAll('.checkbox-item').forEach(function(item) {
+    item.addEventListener('click', function() {
+      var val = item.dataset.household;
+      if (val === 'neither') {
+        document.querySelectorAll('.checkbox-item').forEach(function(c) { c.classList.remove('selected'); });
+        item.classList.add('selected');
+      } else {
+        document.querySelector('.checkbox-item[data-household="neither"]').classList.remove('selected');
+        item.classList.toggle('selected');
+      }
+    });
+  });
+
+  // Financing toggle
+  document.getElementById('financingToggle').addEventListener('click', function() {
+    this.classList.toggle('active');
+  });
+
+  // Modal trigger buttons
+  document.querySelectorAll('.open-quiz-btn').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      openQuizModal();
+    });
+  });
+
+  // Close button
+  document.getElementById('quizClose').addEventListener('click', closeQuizModal);
+
+  // Footer nav
+  document.getElementById('quizNext').addEventListener('click', quizNext);
+  document.getElementById('quizBack').addEventListener('click', quizBack);
+
+  // Close on overlay background click
+  document.getElementById('quizModal').addEventListener('click', function(e) {
+    if (e.target === document.getElementById('quizModal')) closeQuizModal();
+  });
+
+  // Close on Escape
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && document.getElementById('quizModal').classList.contains('open')) {
+      closeQuizModal();
+    }
   });
 </script>
 
