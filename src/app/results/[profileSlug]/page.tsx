@@ -28,7 +28,7 @@ export async function generateMetadata({
 
 const CALENDLY_URL =
   process.env.CALENDLY_EVENT_URL ?? 'https://calendly.com/janelleglanville'
-const HIHELLO_URL = 'https://hihello.me/p/janelleglanville'
+const HIHELLO_URL = 'https://hihello.com/p/1a56532e-99b8-4e8e-8652-168c24c577c8'
 
 export default function ResultsPage({
   params,
