@@ -247,7 +247,9 @@ animation: fadeIn 1.4s ease 0.4s forwards;
 .hero-image-bg {
 width: 100%;
 height: 100%;
-background: linear-gradient(135deg, #E8DDD3 0%, #D4C4B5 40%, #C5B5A5 100%);
+background-image: url('https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=900&q=85&auto=format&fit=crop');
+background-size: cover;
+background-position: center;
 position: relative;
 overflow: hidden;
 }
@@ -623,11 +625,11 @@ height: 100%;
 transition: transform 0.6s ease;
 }
 .profile-card:hover .profile-bg { transform: scale(1.06); }
-.profile-bg-1 { background: linear-gradient(160deg, #2C3E35, #1A2820); }
-.profile-bg-2 { background: linear-gradient(160deg, #4A3728, #2C1F15); }
-.profile-bg-3 { background: linear-gradient(160deg, #C5B5A0, #A89580); }
-.profile-bg-4 { background: linear-gradient(160deg, #1C2535, #0F1620); }
-.profile-bg-5 { background: linear-gradient(160deg, #3D3530, #221E1A); }
+.profile-bg-1 { background-image: url('https://images.unsplash.com/photo-1586023492125-27272f1a53c1?w=800&q=80&auto=format&fit=crop'); background-size: cover; background-position: center; }
+.profile-bg-2 { background-image: url('https://images.unsplash.com/photo-1555041469-db61040b2b7d?w=800&q=80&auto=format&fit=crop'); background-size: cover; background-position: center; }
+.profile-bg-3 { background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80&auto=format&fit=crop'); background-size: cover; background-position: center; }
+.profile-bg-4 { background-image: url('https://images.unsplash.com/photo-1618220179428-22790b461013?w=800&q=80&auto=format&fit=crop'); background-size: cover; background-position: center; }
+.profile-bg-5 { background-image: url('https://images.unsplash.com/photo-1449247709967-d4461a6a6103?w=800&q=80&auto=format&fit=crop'); background-size: cover; background-position: center; }
 .profile-overlay {
 position: absolute;
 inset: 0;
@@ -2063,8 +2065,8 @@ margin: 32px 0;
   <div class="hero-right">
     <div class="hero-image-wrapper">
       <div class="hero-image-bg">
-        <div class="room-art">
-          <!-- Elegant room SVG illustration -->
+        <div class="room-art" style="display:none;">
+          <!-- SVG illustration hidden — replaced by photo background -->
           <svg class="sofa-scene" viewBox="0 0 520 360" fill="none" xmlns="http://www.w3.org/2000/svg">
             <!-- Floor -->
             <rect x="0" y="290" width="520" height="70" fill="rgba(139,119,101,0.3)"/>
@@ -2340,42 +2342,45 @@ margin: 32px 0;
       <div class="quiz-card-title">Book a Consultation</div>
   <div class="quiz-card-sub">Reserve your VIP design session</div>
 
+  <form id="bookingForm" novalidate>
   <div class="form-row">
-    <label class="form-label">Full Name</label>
-    <input type="text" class="form-input" placeholder="Your name">
+    <label class="form-label" for="bookName">Full Name</label>
+    <input type="text" id="bookName" name="fullName" class="form-input" placeholder="Your name" required>
   </div>
   <div class="form-grid">
     <div class="form-row">
-      <label class="form-label">Email</label>
-      <input type="email" class="form-input" placeholder="your@email.com">
+      <label class="form-label" for="bookEmail">Email</label>
+      <input type="email" id="bookEmail" name="email" class="form-input" placeholder="your@email.com" required>
     </div>
     <div class="form-row">
-      <label class="form-label">Phone</label>
-      <input type="tel" class="form-input" placeholder="(000) 000-0000">
+      <label class="form-label" for="bookPhone">Phone</label>
+      <input type="tel" id="bookPhone" name="phone" class="form-input" placeholder="(000) 000-0000">
     </div>
   </div>
   <div class="form-row">
-    <label class="form-label">Room You're Designing</label>
-    <select class="form-select">
+    <label class="form-label" for="bookRoom">Room You're Designing</label>
+    <select id="bookRoom" name="roomType" class="form-select" required>
       <option value="">Select a room</option>
-      <option>Living Room</option>
-      <option>Bedroom</option>
-      <option>Dining Room</option>
-      <option>Home Office</option>
-      <option>Multiple Rooms</option>
+      <option value="Living Room">Living Room</option>
+      <option value="Bedroom">Bedroom</option>
+      <option value="Dining Room">Dining Room</option>
+      <option value="Home Office">Home Office</option>
+      <option value="Multiple Rooms">Multiple Rooms</option>
     </select>
   </div>
   <div class="form-row">
-    <label class="form-label">Investment Range</label>
-    <select class="form-select">
+    <label class="form-label" for="bookBudget">Investment Range</label>
+    <select id="bookBudget" name="budgetRange" class="form-select" required>
       <option value="">Select range</option>
-      <option>$1,000 – $2,000</option>
-      <option>$2,000 – $4,000</option>
-      <option>$4,000 – $8,000</option>
-      <option>$8,000+</option>
+      <option value="$1,000 – $2,000">$1,000 – $2,000</option>
+      <option value="$2,000 – $4,000">$2,000 – $4,000</option>
+      <option value="$4,000 – $8,000">$4,000 – $8,000</option>
+      <option value="$8,000+">$8,000+</option>
     </select>
   </div>
-  <button class="form-submit">Request My VIP Appointment</button>
+  <div id="bookingMsg" style="display:none; margin-bottom:12px; padding:12px 16px; border-radius:6px; font-size:14px;"></div>
+  <button type="submit" class="form-submit" id="bookingSubmitBtn">Request My VIP Appointment</button>
+  </form>
       <p class="form-note">✦ Complimentary · No obligation · Union & Essex County</p>
     </div>
 
@@ -2431,10 +2436,10 @@ margin: 32px 0;
 <footer>
   <div class="footer-logo">Furniture<span>Advisors</span><span style="font-size:12px; color: var(--warm-gray); letter-spacing:0.1em; font-family: var(--font-body); font-weight:300;">.co</span></div>
   <ul class="footer-links">
-    <li><a href="#">Style Quiz</a></li>
-    <li><a href="#">Book Appointment</a></li>
-    <li><a href="#">Style Profiles</a></li>
-    <li><a href="#">Contact</a></li>
+    <li><a href="#" class="open-quiz-btn">Style Quiz</a></li>
+    <li><a href="https://hihello.com/p/1a56532e-99b8-4e8e-8652-168c24c577c8" target="_blank" rel="noopener noreferrer">Book Appointment</a></li>
+    <li><a href="#profiles">Style Profiles</a></li>
+    <li><a href="https://hihello.com/p/1a56532e-99b8-4e8e-8652-168c24c577c8" target="_blank" rel="noopener noreferrer">Contact</a></li>
   </ul>
   <div class="footer-copy">© 2026 FurnitureAdvisors.co · Janelle Glanville · NJ</div>
 </footer>
@@ -2841,6 +2846,80 @@ margin: 32px 0;
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape' && document.getElementById('quizModal').classList.contains('open')) {
       closeQuizModal();
+    }
+  });
+
+  // ═══════════════════════════════════════════════════════════
+  //  BOOKING FORM — POST to /api/book-appointment
+  // ═══════════════════════════════════════════════════════════
+
+  var bookingForm = document.getElementById('bookingForm');
+  var bookingMsg  = document.getElementById('bookingMsg');
+  var bookingBtn  = document.getElementById('bookingSubmitBtn');
+
+  function showBookingMsg(text, isError) {
+    bookingMsg.textContent = text;
+    bookingMsg.style.display = 'block';
+    bookingMsg.style.background = isError ? '#FEE2E2' : '#D1FAE5';
+    bookingMsg.style.color      = isError ? '#991B1B' : '#065F46';
+    bookingMsg.style.border     = isError ? '1px solid #FCA5A5' : '1px solid #6EE7B7';
+  }
+
+  bookingForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    var name    = document.getElementById('bookName').value.trim();
+    var email   = document.getElementById('bookEmail').value.trim();
+    var phone   = document.getElementById('bookPhone').value.trim();
+    var room    = document.getElementById('bookRoom').value;
+    var budget  = document.getElementById('bookBudget').value;
+
+    // Basic validation
+    if (!name || !email || !room || !budget) {
+      showBookingMsg('Please fill in all required fields.', true);
+      return;
+    }
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      showBookingMsg('Please enter a valid email address.', true);
+      return;
+    }
+
+    bookingBtn.disabled = true;
+    bookingBtn.textContent = 'Sending…';
+    bookingMsg.style.display = 'none';
+
+    var nameParts  = name.split(' ');
+    var firstName  = nameParts[0];
+    var lastName   = nameParts.slice(1).join(' ') || '-';
+
+    try {
+      var res = await fetch('/api/book-appointment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          phone: phone || undefined,
+          roomType: room,
+          budgetRange: budget,
+          leadSource: 'Booking Form – Website'
+        })
+      });
+      var data = await res.json();
+      if (data.success) {
+        showBookingMsg('✦ Request received! Janelle will be in touch within 24 hours to confirm your appointment.', false);
+        bookingForm.reset();
+        bookingBtn.textContent = 'Request Sent ✓';
+      } else {
+        showBookingMsg(data.error || 'Something went wrong. Please try again.', true);
+        bookingBtn.disabled = false;
+        bookingBtn.textContent = 'Request My VIP Appointment';
+      }
+    } catch (err) {
+      showBookingMsg('Connection error. Please try again or contact us directly.', true);
+      bookingBtn.disabled = false;
+      bookingBtn.textContent = 'Request My VIP Appointment';
     }
   });
 </script>

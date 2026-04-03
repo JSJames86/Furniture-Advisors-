@@ -18,10 +18,11 @@ const BookingSchema = z.object({
     'coastal-serene',
     'urban-glam',
     'rustic-refined',
-  ]),
+  ]).optional(),
   budgetRange: z.string().min(1),
   roomType: z.string().min(1),
   notes: z.string().optional(),
+  leadSource: z.string().optional(),
   // Optional Calendly webhook fields
   calendlyEventUri: z.string().url().optional(),
   calendlyInviteeUri: z.string().url().optional(),
@@ -54,7 +55,7 @@ export async function POST(request: NextRequest) {
     await sendAppointmentConfirmation({
       to: booking.email,
       firstName: booking.firstName,
-      styleProfile: booking.styleProfile as StyleProfile,
+      styleProfile: (booking.styleProfile ?? 'modern-luxe') as StyleProfile,
     })
 
     // Optional: SMS reminder via Twilio
