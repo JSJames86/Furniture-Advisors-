@@ -7,7 +7,7 @@ const resend = new Resend(process.env.RESEND_API_KEY)
 const FROM = process.env.EMAIL_FROM ?? 'Janelle Glanville <janelle@furnitureadvisory.co>'
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://furnitureadvisory.co'
 const CALENDLY_URL = process.env.CALENDLY_EVENT_URL ?? 'https://calendly.com/janelleglanville'
-const HIHELLO_URL = 'https://hihello.me/p/janelleglanville'
+const HIHELLO_URL = 'https://hihello.com/p/1a56532e-99b8-4e8e-8652-168c24c577c8'
 
 // ─── Brand styles (inline for email clients) ─────────────────────────────────
 
