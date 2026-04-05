@@ -2764,12 +2764,12 @@ margin: 32px 0;
     }).join('');
 
     var advisorUrl = 'https://hihello.com/p/1a56532e-99b8-4e8e-8652-168c24c577c8';
-    document.getElementById('resultsViewBtn').href = advisorUrl;
-    document.getElementById('resultsViewBtn').target = '_blank';
-    document.getElementById('resultsViewBtn').rel = 'noopener noreferrer';
-    document.getElementById('resultsCalendlyBtn').href = advisorUrl;
-    document.getElementById('resultsCalendlyBtn').target = '_blank';
-    document.getElementById('resultsCalendlyBtn').rel = 'noopener noreferrer';
+
+    // Use onclick to bypass the smooth-scroll preventDefault that captured these at page load
+    var viewBtn = document.getElementById('resultsViewBtn');
+    var calBtn  = document.getElementById('resultsCalendlyBtn');
+    viewBtn.onclick = function(e) { e.stopPropagation(); window.open(advisorUrl, '_blank', 'noopener,noreferrer'); return false; };
+    calBtn.onclick  = function(e) { e.stopPropagation(); window.open(advisorUrl, '_blank', 'noopener,noreferrer'); return false; };
 
     quizGoToStep('results');
   }
