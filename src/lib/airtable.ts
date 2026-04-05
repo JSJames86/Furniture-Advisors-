@@ -76,7 +76,7 @@ export async function bookAppointment(booking: AppointmentBooking): Promise<stri
     Email: booking.email,
     ...(booking.phone && { Phone: booking.phone }),
     'Room Type': booking.roomType,
-    'Style Profile': booking.styleProfile,
+    'Style Profile': booking.styleProfile ?? 'Not specified',
     'Budget Range': booking.budgetRange,
     Timeline: 'Not specified',
     'Financing Interest': false,
