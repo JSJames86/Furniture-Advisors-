@@ -51,20 +51,28 @@ export async function POST(request: NextRequest) {
     // Save to Airtable (upsert by email)
     const recordId = await bookAppointment(booking)
 
-    // Send appointment confirmation email with HiHello card link
-    await sendAppointmentConfirmation({
-      to: booking.email,
-      firstName: booking.firstName,
-      styleProfile: (booking.styleProfile ?? 'modern-luxe') as StyleProfile,
-    })
-
-    // Optional: SMS reminder via Twilio
-    if (booking.phone) {
-      const calendlyUrl = process.env.CALENDLY_EVENT_URL ?? 'https://calendly.com/janelleglanville'
-      await sendSMS({
-        to: booking.phone,
-        body: appointmentReminderSMS(booking.firstName, calendlyUrl),
+    // Send appointment confirmation email — wrapped so email failure doesn't break booking
+    try {
+      await sendAppointmentConfirmation({
+        to: booking.email,
+        firstName: booking.firstName,
+        styleProfile: (booking.styleProfile ?? 'modern-luxe') as StyleProfile,
       })
+    } catch (emailErr) {
+      console.error('[book-appointment] Email failed (booking still saved):', emailErr)
+    }
+
+    // Optional: SMS reminder via Twilio — wrapped so SMS failure doesn't break booking
+    if (booking.phone) {
+      try {
+        const calendlyUrl = process.env.CALENDLY_EVENT_URL ?? 'https://calendly.com/janelleglanville'
+        await sendSMS({
+          to: booking.phone,
+          body: appointmentReminderSMS(booking.firstName, calendlyUrl),
+        })
+      } catch (smsErr) {
+        console.error('[book-appointment] SMS failed (booking still saved):', smsErr)
+      }
     }
 
     return NextResponse.json({
