@@ -2010,8 +2010,8 @@ margin: 32px 0;
           <div class="results-divider"></div>
           <div class="results-cta-label">Your next step</div>
           <div class="results-actions">
-            <a href="#" class="results-btn-primary" id="resultsViewBtn">Connect with Your Advisor →</a>
-            <a href="#" class="results-btn-ghost" id="resultsCalendlyBtn">View advisor profile</a>
+            <a href="https://hihello.com/p/1a56532e-99b8-4e8e-8652-168c24c577c8" target="_blank" rel="noopener noreferrer" class="results-btn-primary" id="resultsViewBtn">Connect with Your Advisor →</a>
+            <a href="https://hihello.com/p/1a56532e-99b8-4e8e-8652-168c24c577c8" target="_blank" rel="noopener noreferrer" class="results-btn-ghost" id="resultsCalendlyBtn">View advisor profile</a>
           </div>
           <p class="results-note">Your personalized furniture plan has been sent to your email</p>
         </div>
@@ -2764,12 +2764,12 @@ margin: 32px 0;
     }).join('');
 
     var advisorUrl = 'https://hihello.com/p/1a56532e-99b8-4e8e-8652-168c24c577c8';
-    document.getElementById('resultsViewBtn').href = advisorUrl;
-    document.getElementById('resultsViewBtn').target = '_blank';
-    document.getElementById('resultsViewBtn').rel = 'noopener noreferrer';
-    document.getElementById('resultsCalendlyBtn').href = advisorUrl;
-    document.getElementById('resultsCalendlyBtn').target = '_blank';
-    document.getElementById('resultsCalendlyBtn').rel = 'noopener noreferrer';
+
+    // Use onclick to bypass the smooth-scroll preventDefault that captured these at page load
+    var viewBtn = document.getElementById('resultsViewBtn');
+    var calBtn  = document.getElementById('resultsCalendlyBtn');
+    viewBtn.onclick = function(e) { e.stopPropagation(); window.open(advisorUrl, '_blank', 'noopener,noreferrer'); return false; };
+    calBtn.onclick  = function(e) { e.stopPropagation(); window.open(advisorUrl, '_blank', 'noopener,noreferrer'); return false; };
 
     quizGoToStep('results');
   }

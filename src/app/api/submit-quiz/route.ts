@@ -61,18 +61,27 @@ export async function POST(request: NextRequest) {
 
     const submission = parsed.data
 
-    // Save to Airtable
-    const recordId = await createLeadFromQuiz(submission)
+    // Save to Airtable — wrapped so DB failure doesn't block the user
+    let recordId = ''
+    try {
+      recordId = await createLeadFromQuiz(submission)
+    } catch (dbErr) {
+      console.error('[submit-quiz] Airtable save failed:', dbErr)
+    }
 
-    // Trigger email sequence (email 1 sent immediately)
-    await triggerEmailSequence({
-      to: submission.email,
-      firstName: submission.firstName,
-      styleProfile: submission.styleProfile as StyleProfile,
-      budgetRange: submission.budgetRange,
-      householdType: submission.householdType,
-      roomType: submission.roomType,
-    })
+    // Trigger email sequence — wrapped so email failure doesn't block the user
+    try {
+      await triggerEmailSequence({
+        to: submission.email,
+        firstName: submission.firstName,
+        styleProfile: submission.styleProfile as StyleProfile,
+        budgetRange: submission.budgetRange,
+        householdType: submission.householdType,
+        roomType: submission.roomType,
+      })
+    } catch (emailErr) {
+      console.error('[submit-quiz] Email sequence failed:', emailErr)
+    }
 
     // Return the profile data so the frontend can redirect/display
     const profileData = getProfileData(submission.styleProfile as StyleProfile)
