@@ -349,7 +349,7 @@ export async function sendEmail6Testimonials(payload: EmailSequencePayload) {
   const testimonials = [
     {
       quote:
-        'Janelle completely transformed my living room. She listened to exactly what I wanted and stayed within my budget. I couldn't be happier.',
+        "Janelle completely transformed my living room. She listened to exactly what I wanted and stayed within my budget. I couldn't be happier.",
       name: 'Maria T.',
       location: 'Union, NJ',
     },
