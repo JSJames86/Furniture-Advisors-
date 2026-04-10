@@ -52,10 +52,11 @@ export interface AppointmentBooking {
   lastName: string
   email: string
   phone?: string
-  styleProfile: StyleProfile
+  styleProfile?: StyleProfile
   budgetRange: string
   roomType: string
   notes?: string
+  leadSource?: string
   calendlyEventUri?: string
   calendlyInviteeUri?: string
 }
