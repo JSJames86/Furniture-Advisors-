@@ -266,7 +266,7 @@ export async function sendEmail4PerformanceFabrics(payload: EmailSequencePayload
       },
       {
         name: "Ashley's EverClean™",
-        desc: 'Ashley HomeStore's proprietary performance treatment. Applied to select upholstery lines — I can tell you exactly which ones carry it.',
+        desc: "Ashley HomeStore's proprietary performance treatment. Applied to select upholstery lines — I can tell you exactly which ones carry it.",
       },
     ].map(({ name, desc }) => `<div style="border-left:3px solid ${S.gold};padding:16px 20px;margin:0 0 16px;background-color:${S.cream};">
       <p style="margin:0 0 6px;font-size:14px;font-weight:700;color:${S.charcoal};">${name}</p>
