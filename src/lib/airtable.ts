@@ -1,4 +1,4 @@
-import Airtable from 'airtable'
+import Airtable, { FieldSet } from 'airtable'
 import type { AirtableLead, QuizSubmission, AppointmentBooking } from '@/types'
 
 // ─── Airtable client ──────────────────────────────────────────────────────────
@@ -42,7 +42,7 @@ export async function createLeadFromQuiz(submission: QuizSubmission): Promise<st
     ...(submission.notes && { Notes: submission.notes }),
   }
 
-  const record = await base(LEADS_TABLE).create(fields)
+  const record = await base(LEADS_TABLE).create(fields as unknown as FieldSet)
   return record.getId()
 }
 
@@ -88,7 +88,7 @@ export async function bookAppointment(booking: AppointmentBooking): Promise<stri
     ...(booking.notes && { Notes: booking.notes }),
   }
 
-  const record = await base(LEADS_TABLE).create(fields)
+  const record = await base(LEADS_TABLE).create(fields as unknown as FieldSet)
   return record.getId()
 }
 
